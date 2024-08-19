@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import authReducer from './authReducer'; // Adjust the path based on your project structure
+import authReducer from './authReducer'; 
+import userReducer from './userReducer';
+import employeeReducer from './employeeReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    // Add more reducers here if you have them, like:
-    // user: userReducer,
+    user: userReducer,
+    employee: employeeReducer,
     // products: productsReducer,
 });
 

@@ -1,13 +1,12 @@
 package com.mahel.security.controller;
 
+import com.mahel.security.dto.ResponseDTO;
 import com.mahel.security.dto.auth.ChangePasswordRequest;
 import com.mahel.security.service.UserService;
+import com.mahel.security.service.exception.IllegalStateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -18,12 +17,12 @@ public class UserController {
 
     private final UserService service;
 
-    @PatchMapping("/change-pw")
-    public ResponseEntity<?> changePassword(
+    @PatchMapping("/reset-password")
+    public ResponseEntity<ResponseDTO> changePassword(
           @RequestBody ChangePasswordRequest request,
           Principal connectedUser
-    ) {
-        service.changePassword(request, connectedUser);
-        return ResponseEntity.ok().build();
+    ) throws IllegalStateException {
+        ResponseDTO res =  service.changePassword(request, connectedUser);
+        return ResponseEntity.ok(res);
     }
 }

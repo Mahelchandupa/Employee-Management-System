@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { error, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -112,6 +112,14 @@ const Login = () => {
               />
               {errors.password && touched.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
             </div>
+
+             {/* Error Message */}
+             {error && (
+              <p className="text-red-500 text-sm mb-4">
+                {error}
+              </p>
+            )}
+            
             {/* <div className="flex items-center mb-6">
             <input
               type="checkbox"
@@ -127,7 +135,9 @@ const Login = () => {
               Remember me
             </label>
           </div> */}
-            <button className="w-full bg-blue-600 text-white font-medium p-4 rounded-md hover:bg-blue-700 transition">
+            <button 
+              className={`w-full ${isFormValid ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}  font-medium p-4 rounded-md transition`}
+            >
               Login
             </button>
             {/* <p className="mt-8 text-center text-gray-600">

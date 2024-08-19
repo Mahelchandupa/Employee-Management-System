@@ -1,5 +1,6 @@
 package com.mahel.security.dto.employee;
 
+import com.mahel.security.entity.enums.Department;
 import com.mahel.security.entity.enums.EmploymentStatus;
 import com.mahel.security.entity.enums.Gender;
 import jakarta.validation.constraints.NotBlank;
@@ -51,8 +52,8 @@ public class EmployeeUpdateRequestDTO {
     @NotNull(message = "Employment Status is required")
     private EmploymentStatus employmentStatus;
 
-    @NotBlank(message = "Department is required")
-    private String department;
+    @NotNull(message = "Department is required")
+    private Department department;
 
     @NotBlank(message = "Job title is required")
     private String jobTitle;

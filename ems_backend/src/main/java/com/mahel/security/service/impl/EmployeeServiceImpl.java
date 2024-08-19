@@ -4,10 +4,11 @@ import com.mahel.security.dto.ResponseDTO;
 import com.mahel.security.dto.employee.*;
 import com.mahel.security.entity.Employee;
 import com.mahel.security.entity.User;
-import com.mahel.security.exception.RecordNotFoundException;
 import com.mahel.security.repository.EmployeeRepository;
 import com.mahel.security.repository.UserRepository;
 import com.mahel.security.service.EmployeeService;
+import com.mahel.security.service.exception.DuplicateRecordException;
+import com.mahel.security.service.exception.RecordNotFoundException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.MailSender;
@@ -42,9 +43,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponseDTO saveEmployee(EmployeeSaveRequestDTO employeeSaveRequestDTO) {
+    public EmployeeResponseDTO saveEmployee(EmployeeSaveRequestDTO employeeSaveRequestDTO) throws DuplicateRecordException {
+
+        Employee employee = employeeRepository.findByEmail(employeeSaveRequestDTO.getEmail());
+
+        if (employee != null) {
+            throw new DuplicateRecordException("Email Already Registered");
+        }
+
         // Map DTO to entity
-        Employee employee = mapper.map(employeeSaveRequestDTO, Employee.class);
+        employee = mapper.map(employeeSaveRequestDTO, Employee.class);
 
         // Generate a random password
         String generatedPassword = generateSecurePassword();
@@ -61,8 +69,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         user.setFirstname(employee.getFirstName());
         user.setLastname(employee.getLastName());
         user.setEmail(employee.getEmail());
-        user.setPassword(employee.getPassword());  // Already encoded
-        user.setRole(employee.getRole());  // Set the role (e.g., EMPLOYEE)
+        user.setPassword(employee.getPassword());  // Already encode
+        user.setRole(employee.getRole());  // Set the role
 
         // Save user entity (you would have a UserRepository to save the user)
         userRepository.save(user);
@@ -172,5 +180,22 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.delete(employee);
 
         return new ResponseDTO(String.format("Employee with id %d deleted successfully", id));
+    }
+
+    @Override
+    public EmployeeResponseDTO findByEmployeeEmail(String email) throws RecordNotFoundException {
+
+        Employee employee = employeeRepository.findByEmail(email);
+
+        if (employee == null) {
+           throw  new RecordNotFoundException("Employee not found");
+        }
+
+        EmployeeResponseDTO employeeResponseDTO = mapper.map(employee, EmployeeResponseDTO.class);
+        employeeResponseDTO.setDepartment(employee.getDepartment().getValue());
+        employeeResponseDTO.setGender(employee.getGender().getValue());
+        employeeResponseDTO.setEmploymentStatus(employee.getEmploymentStatus().getValue());
+
+        return employeeResponseDTO;
     }
 }

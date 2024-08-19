@@ -2,8 +2,21 @@ import { FaBuilding } from "react-icons/fa";
 import { GrProjects } from "react-icons/gr";
 import { FaUsers } from "react-icons/fa";
 import { ImUsers } from "react-icons/im";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const AdminDashboard = () => {
+
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);      
+
   return (
     <div className="flex flex-wrap -mx-4">
       <div className="w-full lg:w-1/3 xl:w-1/4 px-4 mb-4">

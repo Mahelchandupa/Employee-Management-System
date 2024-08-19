@@ -26,13 +26,10 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String email = authentication.getName();
         Employee employee = employeeRepository.findByEmail(email);
 
-        if (employee == null) {
-            throw new RuntimeException("User not found");
-        }
-
-        if (employee.isFirstAttempt()) {
+        if (employee != null && employee.isFirstAttempt()) {
             response.setHeader("redirect-url","/reset-password");
-        } else {
+        }
+        else {
             response.setHeader( "redirect-url", "/");
         }
     }

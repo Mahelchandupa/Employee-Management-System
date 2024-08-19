@@ -1,16 +1,16 @@
-export function AddNewEmpValidation(values) {
+export function RegisterNewEmpValidation(values) {
   let errors = {};
 
-  if (!values.firstname) {
-    errors.firstname = "First name is required";
-  } else if (values.firstname.length < 3) {
-    errors.firstname = "first name must be at least 3 characters";
+  if (!values.firstName) {
+    errors.firstName = "First name is required";
+  } else if (values.firstName.length < 3) {
+    errors.firstName = "first name must be at least 3 characters";
   }
 
-  if (!values.lastname) {
-    errors.lastname = "Last name is required";
-  } else if (values.lastname.length < 3) {
-    errors.lastname = "last name must be at least 3 characters";
+  if (!values.lastName) {
+    errors.lastName = "Last name is required";
+  } else if (values.lastName.length < 3) {
+    errors.lastName = "last name must be at least 3 characters";
   }
 
   if (!values.email) {
@@ -21,14 +21,28 @@ export function AddNewEmpValidation(values) {
     errors.email = "Email address is invalid";
   }
 
-  // if (!values.password) {
-  //   errors.password = "Password is required";
-  // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(values.password)) {
-  //   errors.password ="Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character";
-  // }
-
   if (!values.role) {
     errors.role = "Role is required";
+  }
+
+  if (!values.employmentStatus) {
+    errors.employmentStatus = "Employment status is required";
+  }
+
+  if (!values.department) {
+    errors.department = "Department is required";
+  }
+
+  if (!values.jobTitle) {
+    errors.jobTitle = "Job title is required";
+  }
+
+  if (!values.salary) {
+    errors.salary = "Salary is required";
+  }
+
+  if (!values.workHours) {
+    errors.workHours = "Work hours is required";
   }
 
   return errors;
@@ -48,12 +62,6 @@ export function LoginValidation(values) {
   if (!values.password) {
     errors.password = "Password is required";
   }
-  // else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(values.password)) {
-  //   errors.password ="Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character";
-  // }
-  // else if (values.password.length < 6) {
-  //   errors.password = "Password must be at least 6 characters";
-  // }
 
   return errors;
 }
@@ -64,25 +72,17 @@ export function ResetPasswordValidation(values) {
   if (!values.currentPassword) {
     errors.currentPassword = "Current Password is required";
   } 
-  // else if (values.currentPassword.length < 6) {
-  //   errors.currentPassword = "Current Password must be at least 6 characters";
-  // }
 
   if (!values.newPassword) {
-    errors.newPassword = "New Password is required";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-      values.newPassword
-    )
-  ) {
-    errors.password =
-      "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character";
+    errors.newPassword = "newPassword is required";
+  } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(values.newPassword)) {
+    errors.newPassword ="Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character";
   }
 
-  if (!values.confirmPassword) {
-    errors.confirmPassword = "Confirm Password is required";
-  } else if (values.confirmPassword !== values.newPassword) {
-    errors.confirmPassword = "Passwords do not match";
+  if (!values.confirmationPassword) {
+    errors.confirmationPassword = "Confirm Password is required";
+  } else if (values.confirmationPassword !== values.newPassword) {
+    errors.confirmationPassword = "Passwords do not match";
   }
 
   return errors;

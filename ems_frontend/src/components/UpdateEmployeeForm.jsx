@@ -1,16 +1,18 @@
-import { AddNewEmpValidation } from "../validation/Validation";
+import { RegisterNewEmpValidation } from "../validation/Validation";
 import useValidation from "../hooks/useValidation";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { ROLES } from "../utils/permission";
 
 const UpdateEmployeeForm = () => {
-
   const { user } = useSelector((state) => state.auth);
+  const { employee } = useSelector((state) => state.employee);
 
-  const { role } = user;
+  const { role, authorities } = user;
 
   const initialState = {
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     gender: "",
@@ -32,8 +34,21 @@ const UpdateEmployeeForm = () => {
     homePhone: "",
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    useValidation(initialState, AddNewEmpValidation);
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setValues,
+  } = useValidation(initialState, RegisterNewEmpValidation);
+
+  useEffect(() => {
+    if (employee) {
+      setValues(employee);
+    }
+  }, [employee]);
 
   const isFormValid =
     Object.keys(errors).length === 0 &&
@@ -47,10 +62,11 @@ const UpdateEmployeeForm = () => {
     <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-6xl">
         <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-          Update Employee Profile
+          {
+            role === ROLES.ROLE_MANAGER ? "Update Employee" : "Update Profile"
+          }
         </h2>
         <form onSubmit={handleSubmit(submitForm)}>
-
           {/* Personal Details */}
           <div className=" border border-gray-200 rounded-md dark:border-gray-600 px-8 py-8">
             <h1 className=" font-bold text-xl pb-4 text-purple-600 dark:text-purple-500">
@@ -63,17 +79,17 @@ const UpdateEmployeeForm = () => {
                 </label>
                 <input
                   type="text"
-                  value={values.firstname}
+                  value={values.firstName}
                   onChange={handleChange}
                   className="w-full py-1 px-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="First Name"
                   onBlur={handleBlur}
-                  name="firstname"
-                  id="firstname"
+                  name="firstName"
+                  id="firstName"
                 />
-                {touched.firstname && errors.firstname && (
+                {touched.firstName && errors.firstName && (
                   <p className="text-red-400 text-sm mt-1">
-                    {errors.firstname}
+                    {errors.firstName}
                   </p>
                 )}
               </div>
@@ -83,35 +99,35 @@ const UpdateEmployeeForm = () => {
                 </label>
                 <input
                   type="text"
-                  value={values.lastname}
+                  value={values.lastName}
                   onChange={handleChange}
                   className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Last Name"
                   onBlur={handleBlur}
-                  name="lastname"
-                  id="lastname"
+                  name="lastName"
+                  id="lastName"
                 />
-                {touched.lastname && errors.lastname && (
-                  <p className="text-red-400 text-sm mt-1">{errors.lastname}</p>
+                {touched.lastName && errors.lastName && (
+                  <p className="text-red-400 text-sm mt-1">{errors.lastName}</p>
                 )}
               </div>
 
-              <div>
+              <div className="">
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">
-                  Email <span className=" text-red-400">*</span>
+                  Date of Birthday <span className=" text-red-400">*</span>
                 </label>
                 <input
-                  type="email"
-                  value={values.email}
+                  type="date"
+                  value={values.dob}
                   onChange={handleChange}
-                  className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder="Email"
+                  className="w-full py-1 px-2.5  border text-gray-400 border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  placeholder="Date of Birthday"
                   onBlur={handleBlur}
-                  name="email"
-                  id="email"
+                  name="dob"
+                  id="dob"
                 />
-                {touched.email && errors.email && (
-                  <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                {touched.dob && errors.dob && (
+                  <p className="text-red-400 text-sm mt-1">{errors.dob}</p>
                 )}
               </div>
             </div>
@@ -137,27 +153,27 @@ const UpdateEmployeeForm = () => {
                 )}
               </div>
 
-              <div className="mt-4">
+              <div className=" mt-4">
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">
-                  Password <span className=" text-red-400">*</span>
+                  Email <span className=" text-red-400">*</span>
                 </label>
                 <input
-                  type="password"
-                  value={values.password}
+                  type="email"
+                  value={values.email}
                   onChange={handleChange}
                   className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder="Password"
+                  placeholder="Email"
                   onBlur={handleBlur}
-                  name="password"
-                  id="password"
+                  name="email"
+                  id="email"
                 />
-                {touched.password && errors.password && (
-                  <p className="text-red-400 text-sm mt-1">{errors.password}</p>
+                {touched.email && errors.email && (
+                  <p className="text-red-400 text-sm mt-1">{errors.email}</p>
                 )}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">
                   Mobile <span className=" text-red-400">*</span>
@@ -177,25 +193,6 @@ const UpdateEmployeeForm = () => {
                 )}
               </div>
 
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">
-                  Date of Birthday <span className=" text-red-400">*</span>
-                </label>
-                <input
-                  type="date"
-                  value={values.dob}
-                  onChange={handleChange}
-                  className="w-full py-1 px-2.5  border text-gray-400 border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600"
-                  placeholder="Date of Birthday"
-                  onBlur={handleBlur}
-                  name="dob"
-                  id="dob"
-                />
-                {touched.dob && errors.dob && (
-                  <p className="text-red-400 text-sm mt-1">{errors.dob}</p>
-                )}
-              </div>
-
               <div className="">
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">
                   Gender <span className=" text-red-400">*</span>
@@ -208,7 +205,9 @@ const UpdateEmployeeForm = () => {
                   name="gender"
                   id="gender"
                 >
-                  <option value="" disabled>Select Gender</option>
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
                   <option value="OTHER">Other</option>
@@ -220,22 +219,22 @@ const UpdateEmployeeForm = () => {
             </div>
 
             <div className=" mt-4">
-                <label className="block text-gray-700 dark:text-gray-300 mb-2">
-                  Address <span className=" text-red-400">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={values.address}
-                  onChange={handleChange}
-                  className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder="Personl Mobile"
-                  onBlur={handleBlur}
-                  name="address"
-                  id="address"
-                />
-                {touched.address && errors.address && (
-                  <p className="text-red-400 text-sm mt-1">{errors.address}</p>
-                )}
+              <label className="block text-gray-700 dark:text-gray-300 mb-2">
+                Address <span className=" text-red-400">*</span>
+              </label>
+              <input
+                type="text"
+                value={values.address}
+                onChange={handleChange}
+                className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Personl Mobile"
+                onBlur={handleBlur}
+                name="address"
+                id="address"
+              />
+              {touched.address && errors.address && (
+                <p className="text-red-400 text-sm mt-1">{errors.address}</p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
@@ -254,9 +253,7 @@ const UpdateEmployeeForm = () => {
                   id="city"
                 />
                 {errors.city && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.city}
-                  </p>
+                  <p className="text-red-400 text-sm mt-1">{errors.city}</p>
                 )}
               </div>
               <div>
@@ -274,7 +271,9 @@ const UpdateEmployeeForm = () => {
                   id="postalcode"
                 />
                 {touched.postalcode && errors.postalcode && (
-                  <p className="text-red-400 text-sm mt-1">{errors.postalcode}</p>
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.postalcode}
+                  </p>
                 )}
               </div>
               <div>
@@ -292,17 +291,24 @@ const UpdateEmployeeForm = () => {
                   id="homePhone"
                 />
                 {touched.homePhone && errors.homePhone && (
-                  <p className="text-red-400 text-sm mt-1">{errors.homePhone}</p>
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.homePhone}
+                  </p>
                 )}
-              </div>     
+              </div>
             </div>
           </div>
 
           {/* Job Information */}
           <div className=" border border-gray-200 rounded-md dark:border-gray-600 px-8 py-8 mt-6">
-            <h1 className=" font-bold text-xl pb-4 text-purple-600 dark:text-purple-500">
-              Job Information
-            </h1>
+            <div className=" flex justify-between items-center pb-4">
+              <h1 className=" font-bold text-xl text-purple-600 dark:text-purple-500">
+                Job Information
+              </h1>
+              {
+                role === ROLES.ROLE_EMPLOYEE && <p className=" text-[12px] text-red-400">* Only HR manager can update job details </p>
+              }
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">
@@ -312,36 +318,45 @@ const UpdateEmployeeForm = () => {
                   type="text"
                   value={values.jobTitle}
                   onChange={handleChange}
-                  className="w-full py-1 px-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full py-1 disabled:text-gray-400 disabled:dark:text-gray-400 px-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Job Title"
                   onBlur={handleBlur}
                   name="jobTitle"
                   id="jobTitle"
-                  disabled={role !== "ROLE_MANAGER"}
+                  disabled={role !== ROLES.ROLE_MANAGER}
                 />
                 {touched.jobTitle && errors.jobTitle && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.jobTitle}
-                  </p>
+                  <p className="text-red-400 text-sm mt-1">{errors.jobTitle}</p>
                 )}
               </div>
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 mb-2">
                   Department <span className=" text-red-400">*</span>
                 </label>
-                <input
-                  type="text"
-                  value={values.department}
-                  onChange={handleChange}
-                  className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder="Department"
-                  onBlur={handleBlur}
-                  name="department"
-                  id="department"
-                  disabled={role !== "ROLE_MANAGER"}
-                />
+                <select
+                    type="text"
+                    value={values.department}
+                    onChange={handleChange}
+                    className="w-full py-1 px-2.5 border text-gray-400 dark:text-gray-300 border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 focus:outline-none"
+                    onBlur={handleBlur}
+                    name="department"
+                    id="department"
+                    disabled={role !== ROLES.ROLE_MANAGER}
+                  >
+                    <option value="" disabled>
+                      Select Department
+                    </option>
+                    <option value="Finance">Finance</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Human Resources">Human Resources</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Security Deparment">Security Deparment</option>
+                  </select>
                 {touched.department && errors.department && (
-                  <p className="text-red-400 text-sm mt-1">{errors.department}</p>
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.department}
+                  </p>
                 )}
               </div>
 
@@ -356,16 +371,20 @@ const UpdateEmployeeForm = () => {
                   onBlur={handleBlur}
                   name="employmentStatus"
                   id="employmentStatus"
-                  disabled={role !== "ROLE_MANAGER"}
+                  disabled={role !== ROLES.ROLE_MANAGER}
                 >
-                  <option value="" disabled>Select status</option>
+                  <option value="" disabled>
+                    Select status
+                  </option>
                   <option value="FULL_TIME">Full Time</option>
                   <option value="PART_TIME">Part Time</option>
                   <option value="TEMPORARY">Temporary</option>
                   <option value="CASUAL">Casual</option>
                 </select>
                 {touched.employmentStatus && errors.employmentStatus && (
-                  <p className="text-red-400 text-sm mt-1">{errors.employmentStatus}</p>
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.employmentStatus}
+                  </p>
                 )}
               </div>
             </div>
@@ -380,15 +399,17 @@ const UpdateEmployeeForm = () => {
                   type="number"
                   value={values.workHours}
                   onChange={handleChange}
-                  className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full py-1 px-2.5 disabled:text-gray-400 disabled:dark:text-gray-400 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Working Hours"
                   onBlur={handleBlur}
                   name="workHours"
                   id="workHours"
-                  disabled={role !== "ROLE_MANAGER"}
+                  disabled={role !== ROLES.ROLE_MANAGER}
                 />
                 {touched.workHours && errors.workHours && (
-                  <p className="text-red-400 text-sm mt-1">{errors.workHours}</p>
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.workHours}
+                  </p>
                 )}
               </div>
 
@@ -400,12 +421,12 @@ const UpdateEmployeeForm = () => {
                   type="text"
                   value={values.salary}
                   onChange={handleChange}
-                  className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full py-1 px-2.5 disabled:text-gray-400 disabled:dark:text-gray-400 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Personl salary"
                   onBlur={handleBlur}
                   name="salary"
                   id="salary"
-                  disabled={role !== "ROLE_MANAGER"}
+                  disabled={role !== ROLES.ROLE_MANAGER}
                 />
                 {touched.salary && errors.salary && (
                   <p className="text-red-400 text-sm mt-1">{errors.salary}</p>
@@ -436,9 +457,7 @@ const UpdateEmployeeForm = () => {
                   id="bank"
                 />
                 {touched.bank && errors.bank && (
-                  <p className="text-red-400 text-sm mt-1">
-                    {errors.bank}
-                  </p>
+                  <p className="text-red-400 text-sm mt-1">{errors.bank}</p>
                 )}
               </div>
               <div>
@@ -497,13 +516,14 @@ const UpdateEmployeeForm = () => {
                   id="accNumber"
                 />
                 {touched.accNumber && errors.accNumber && (
-                  <p className="text-red-400 text-sm mt-1">{errors.accNumber}</p>
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.accNumber}
+                  </p>
                 )}
               </div>
             </div>
           </div>
           {/* Bank account close */}
-
 
           <div className="mt-6 flex justify-end space-x-4">
             <button

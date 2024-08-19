@@ -84,6 +84,7 @@ function useValidation(initialState = {}, validate) {
     handleChange,
     handleBlur,
     handleSubmit,
+    setValues
   };
 }
 

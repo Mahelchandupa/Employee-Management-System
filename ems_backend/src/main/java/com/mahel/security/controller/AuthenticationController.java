@@ -4,6 +4,8 @@ import com.mahel.security.auth.AuthenticationService;
 import com.mahel.security.dto.auth.RegisterRequest;
 import com.mahel.security.dto.auth.AuthenticationRequest;
 import com.mahel.security.dto.auth.AuthenticationResponse;
+import com.mahel.security.service.exception.BadCredentialsException;
+import com.mahel.security.service.exception.RecordNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class AuthenticationController {
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
-  ) {
+  ) throws RecordNotFoundException, BadCredentialsException {
     return ResponseEntity.ok(service.authenticate(request));
   }
 

@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseDTO {
-    private String response;
+    private String message;
     private Object data;
 
-    public ResponseDTO(String response){
-        this.response = response;
+    public ResponseDTO(String message){
+        this.message = message;
     }
 }

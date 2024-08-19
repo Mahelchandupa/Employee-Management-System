@@ -1,7 +1,5 @@
 package com.mahel.security.dto.employee;
 
-import com.mahel.security.entity.enums.EmploymentStatus;
-import com.mahel.security.entity.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,16 +17,17 @@ public class EmployeeResponseDTO {
     private String firstName;
     private String lastName;
     private String dob;
-    private Gender gender;
+    private String gender;
     private String email;
     private String mobile;
     private String homePhone;
     private String address;
     private String postalCode;
     private String nic;
+    private boolean firstAttempt;
 
     //Job relate details
-    private EmploymentStatus employmentStatus;
+    private String employmentStatus;
     private String department;
     private String jobTitle;
     private double salary;

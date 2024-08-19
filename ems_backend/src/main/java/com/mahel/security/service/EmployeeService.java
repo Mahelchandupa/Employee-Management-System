@@ -5,11 +5,12 @@ import com.mahel.security.dto.employee.EmployeeSaveRequestDTO;
 import com.mahel.security.dto.employee.EmployeeUpdateRequestDTO;
 import com.mahel.security.dto.employee.EmployeeResponseDTO;
 import com.mahel.security.dto.employee.EmployeeResponseListDTO;
-import com.mahel.security.exception.RecordNotFoundException;
+import com.mahel.security.service.exception.DuplicateRecordException;
+import com.mahel.security.service.exception.RecordNotFoundException;
 
 public interface EmployeeService {
 
-    EmployeeResponseDTO saveEmployee(EmployeeSaveRequestDTO employeeSaveRequestDTO);
+    EmployeeResponseDTO saveEmployee(EmployeeSaveRequestDTO employeeSaveRequestDTO) throws DuplicateRecordException;
 
     EmployeeResponseDTO updateEmployee(
             EmployeeUpdateRequestDTO employeeRequestDTO,
@@ -22,4 +23,5 @@ public interface EmployeeService {
 
     ResponseDTO deleteEmployee(Long id) throws RecordNotFoundException;
 
+    EmployeeResponseDTO findByEmployeeEmail(String email) throws RecordNotFoundException;
 }

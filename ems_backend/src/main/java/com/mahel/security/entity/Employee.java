@@ -1,5 +1,6 @@
 package com.mahel.security.entity;
 
+import com.mahel.security.entity.enums.Department;
 import com.mahel.security.entity.enums.EmploymentStatus;
 import com.mahel.security.entity.enums.Gender;
 import com.mahel.security.entity.enums.Role;
@@ -34,14 +35,14 @@ public class Employee {
     private String address;
     private String postalCode;
     private String nic;
-    private boolean firstAttempt = true;
+    private boolean firstAttempt;
     private String password;
     private Role role;
     private String city;
 
     //Job relate details
     private EmploymentStatus employmentStatus;
-    private String department;
+    private Department department;
     private String jobTitle;
     private double salary;
     private Integer workHours;

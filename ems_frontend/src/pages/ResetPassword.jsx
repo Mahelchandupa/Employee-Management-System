@@ -1,36 +1,70 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ResetPasswordValidation } from "../validation/Validation";
 import useValidation from "../hooks/useValidation";
+import {
+  clearUserMessage,
+  resetUserPassword,
+} from "../redux/actions/userActions";
+import usePreviousRoute from "../hooks/usePreviousRoute";
 
 const ResetPassword = () => {
-  const { isAuthenticated,user } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { message, success } = useSelector((state) => state.user);
+
+  const previousRoute = usePreviousRoute();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate("/login");
+  //   }
+  // }, [isAuthenticated, navigate]);
+
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
+    if (previousRoute) {
+      console.log("Previous route:", previousRoute.pathname);
     }
-  }, [isAuthenticated, navigate]);
+  }, [previousRoute]);
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        dispatch(clearUserMessage());
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [message, dispatch]);
 
   const initialState = {
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    confirmationPassword: "",
   };
 
-  const { values , errors, touched, handleChange, handleBlur, handleSubmit } =
-    useValidation(initialState, ResetPasswordValidation);
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setValues,
+  } = useValidation(initialState, ResetPasswordValidation);
 
   const isFormValid =
     Object.keys(errors).length === 0 &&
     Object.values(values).every((value) => value);
 
   const submitForm = () => {
-    console.log("Form Submitted", values);
-    dispatch(loginUser(values));
+    dispatch(resetUserPassword(values));
+    if (success) {
+      setValues(initialState);
+    }
   };
 
   return (
@@ -54,8 +88,10 @@ const ResetPassword = () => {
               name="currentPassword"
               id="currentPassword"
             />
-            {errors.currentPassword && touched.currentPassword (
-              <p className="text-red-400 text-sm mt-1">{errors.currentPassword}</p>
+            {touched.currentPassword && errors.currentPassword && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.currentPassword}
+              </p>
             )}
           </div>
 
@@ -73,7 +109,7 @@ const ResetPassword = () => {
               name="newPassword"
               id="newPassword"
             />
-            {errors.newPassword && touched.newPassword (
+            {touched.newPassword && errors.newPassword && (
               <p className="text-red-400 text-sm mt-1">{errors.newPassword}</p>
             )}
           </div>
@@ -84,16 +120,18 @@ const ResetPassword = () => {
             </label>
             <input
               type="password"
-              value={values.confirmPassword}
+              value={values.confirmationPassword}
               onChange={handleChange}
               onBlur={handleBlur}
               className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               placeholder="Confirm Password"
-              name="confirmPassword"
-              id="confirmPassword"
+              name="confirmationPassword"
+              id="confirmationPassword"
             />
-            {errors.confirmPassword && touched.confirmPassword (
-              <p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
+            {touched.confirmationPassword && errors.confirmationPassword && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.confirmationPassword}
+              </p>
             )}
           </div>
 
@@ -118,6 +156,15 @@ const ResetPassword = () => {
             </button>
           </div>
         </form>
+        {message && (
+          <div
+            className={`mt-4 p-4 text-white ${
+              success ? "bg-green-500" : "bg-red-500"
+            }`}
+          >
+            {message}
+          </div>
+        )}
       </div>
     </div>
   );

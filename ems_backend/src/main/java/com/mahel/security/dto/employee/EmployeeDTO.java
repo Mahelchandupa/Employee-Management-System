@@ -16,13 +16,14 @@ public class EmployeeDTO {
     private String firstName;
     private String lastName;
     private String dob;
-    private Gender gender;
+    private String gender;
     private String email;
     private String mobile;
     private String homePhone;
     private String address;
     private String postalCode;
     private String nic;
+    private boolean firstAttempt;
 
     //Job relate details
     private EmploymentStatus employmentStatus;
