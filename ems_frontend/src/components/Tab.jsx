@@ -9,9 +9,9 @@ import { ROLES } from "../utils/permission";
 const Tab = () => {
   const [activeTab, setActiveTab] = useState(0);
 
-  const { user } = useSelector((state) => state.auth);
+  const { authUser } = useSelector((state) => state.auth);
 
-  const { role } = user;
+  const { role } = authUser;
 
   return (
     <div>

@@ -5,13 +5,14 @@ import Navbar from "../components/NavBar";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { setAuthToken } from "../utils/Authorization";
-import { LOGIN_SUCCESS } from "../utils/types";
+import { LOGIN_SUCCESS, LOGOUT } from "../utils/types";
 import { refreshToken } from "../redux/actions/authActions";
+import { getEmployeeDetails } from "../redux/actions/employeeActions";
 
 const Root = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login" || location.pathname === "/401";
+  const isLoginPage = location.pathname === "/login" || location.pathname === "/401" || location.pathname === '/two-fa-varification';
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -24,10 +25,27 @@ const Root = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // Detect page refresh and clear tokens
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      dispatch({ type: LOGOUT }); 
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       const decoded = jwtDecode(token);
       const currentTime = Date.now() / 1000;
+      const authorities = decoded.authorities || [];
+      const userRole = authorities.pop();
 
       if (decoded.exp < currentTime) {
         // Token has expired, attempt to refresh
@@ -39,9 +57,14 @@ const Root = () => {
           type: LOGIN_SUCCESS,
           payload: {
             ...decoded,
-            role: decoded.authorities.pop(),
+            role: userRole,
           },
         });
+
+        if (userRole === "ROLE_EMPLOYEE") {
+          dispatch(getEmployeeDetails(decoded.sub));
+          console.log("Sending request to get employee details");
+        }
       }
     }
   }, [dispatch]);

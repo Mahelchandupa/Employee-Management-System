@@ -4,6 +4,7 @@ import com.mahel.security.auth.AuthenticationService;
 import com.mahel.security.dto.auth.RegisterRequest;
 import com.mahel.security.dto.auth.AuthenticationRequest;
 import com.mahel.security.dto.auth.AuthenticationResponse;
+import com.mahel.security.dto.auth.VerificationRequest;
 import com.mahel.security.service.exception.BadCredentialsException;
 import com.mahel.security.service.exception.RecordNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,10 +23,15 @@ public class AuthenticationController {
   private final AuthenticationService service;
 
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(
+  public ResponseEntity<?> register(
       @RequestBody RegisterRequest request
   ) {
-    return ResponseEntity.ok(service.register(request));
+
+    var response = service.register(request);
+    if (request.isMfaEnabled()) {
+      return ResponseEntity.ok(response);
+    }
+    return ResponseEntity.accepted().build();
   }
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
@@ -42,5 +48,19 @@ public class AuthenticationController {
     service.refreshToken(request, response);
   }
 
+  @PostMapping("/enable-2fa")
+  public ResponseEntity<AuthenticationResponse> enable2FA(
+          @RequestParam String email
+  ) throws RecordNotFoundException {
+    var response = service.enable2FA(email);
+    return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("/verify")
+  public ResponseEntity<?> verifyCode(
+          @RequestBody VerificationRequest verificationRequest
+  ) throws RecordNotFoundException, BadCredentialsException {
+    return ResponseEntity.ok(service.verifyCode(verificationRequest));
+  }
 
 }

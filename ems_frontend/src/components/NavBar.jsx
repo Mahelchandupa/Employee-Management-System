@@ -10,14 +10,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/actions/authActions";
 import { Link, useLocation } from "react-router-dom";
 import { ROLES } from "../utils/permission";
+import EmployeeAvatar from '../assets/employee-avatar-ico.jpg';
 
 const Navbar = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
   const [theme, setTheme] = useState("light");
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const location = useLocation();
-  const {user} = useSelector(state => state.auth);
-  const { role } = user;
+  const { authUser } = useSelector(state => state.auth);
+  const { role } = authUser != null && authUser;
+  const { user } = useSelector(state => state.user);
 
   const getNavTitle = () => {
     if (location.pathname === "/") return "Dashboard";
@@ -72,7 +74,7 @@ const Navbar = ({ toggleSidebar }) => {
             className="text-gray-600 h-6 w-6 dark:text-gray-300 cursor-pointer"
             onClick={toggleProfileMenu}
           />
-          {isProfileMenuOpen && (
+          {/* {isProfileMenuOpen && (
             <div className="absolute right-0 mt-2 bg-white dark:bg-gray-700 shadow-lg rounded-md py-2 w-48">
               <Link
                 to="/update-employee"
@@ -88,6 +90,38 @@ const Navbar = ({ toggleSidebar }) => {
               >
                 Reset Password
               </Link>
+            </div>
+          )} */}
+           {isProfileMenuOpen && (
+            <div className="absolute right-0 mt-2 w-56 border-t border-blue-500 rounded-lg shadow-lg transform transition-all duration-300 ease-in-out bg-white dark:bg-gray-800">
+              <div className="flex flex-col items-center p-4">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-primary dark:border-purple-700">
+                  <img
+                    src={EmployeeAvatar}
+                    alt="Profile"
+                    className="object-cover w-full h-full"
+                  />
+                  {/* <div className="absolute bottom-0 right-0 p-1 bg-primary dark:bg-purple-700 rounded-full text-white">
+                    <FaUserCircle className="w-5 h-5" />
+                  </div> */}
+                </div>
+                <h2 className="mt-4 text-xl font-bold text-gray-800 dark:text-white capitalize">
+                  {user?.firstName}
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {user?.jobTitle}
+                </p>
+                <p className="mt-1 text-xs text-gray-700 bg-yellow-200 px-2 dark:bg-yellow-100">
+                  {user?.email}
+                </p>
+                <Link
+                  to="/user-profile"
+                  className="mt-4 px-4 py-2 w-full text-center text-sm rounded-md text-white bg-primary dark:bg-purple-700 hover:bg-primary-dark dark:hover:bg-purple-900 transition duration-300"
+                  onClick={handleCloseProfileMenu}
+                >
+                  View Profile
+                </Link>
+              </div>
             </div>
           )}
         </div>

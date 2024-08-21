@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 const AdminDashboard = () => {
 
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -6,9 +6,9 @@ import { PERMISSIONS, ROLES } from "../utils/permission";
 import { clearEmployeeMessage, registerEmployee } from "../redux/actions/employeeActions";
 
 const NewEmployeeForm = () => {
-  const { user } = useSelector((state) => state.auth);
-  const { role, authorities } = user;
-  const { message, error, success } = useSelector((state) => state.employee);
+  const { authUser } = useSelector((state) => state.auth);
+  const { role, authorities } = authUser;
+  const { message, error, success } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const initialState = {

@@ -1,8 +1,8 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL } from '../../utils/types';
+import { LOGIN_SUCCESS, LOGIN_FAIL, PROMPT_2FA_VERIFICATION } from '../../utils/types';
 
 const initialState = {
     isAuthenticated: false,
-    user: null,
+    authUser: null,
     loading: true,
     error: null
 };
@@ -15,16 +15,21 @@ export default function authReducer(state = initialState, action) {
             return {
                 ...state,
                 isAuthenticated: true,
-                user: payload,
+                authUser: payload,
                 loading: false
             };
         case LOGIN_FAIL:
             return {
                 ...state,
                 isAuthenticated: false,
-                user: null,
+                authUser: null,
                 loading: false,
                 error: payload
+            };
+        case PROMPT_2FA_VERIFICATION:
+            return {
+                ...state,
+                authUser: payload
             };
         default:
             return state;

@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import { ROLES } from "../utils/permission";
 
 const UpdateEmployeeForm = () => {
-  const { user } = useSelector((state) => state.auth);
-  const { employee } = useSelector((state) => state.employee);
+  const { authUser } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
 
-  const { role, authorities } = user;
+  const { role, authorities } = authUser;
 
   const initialState = {
     firstName: "",
@@ -45,10 +45,10 @@ const UpdateEmployeeForm = () => {
   } = useValidation(initialState, RegisterNewEmpValidation);
 
   useEffect(() => {
-    if (employee) {
-      setValues(employee);
+    if (user) {
+      setValues(user);
     }
-  }, [employee]);
+  }, [user]);
 
   const isFormValid =
     Object.keys(errors).length === 0 &&

@@ -31,7 +31,8 @@ const Login = () => {
     Object.keys(errors).length === 0 &&
     Object.values(values).every((value) => value);
 
-  const submitForm = () => {
+  const submitForm = (e) => {
+    // e.preventDefault();
     console.log("Form Submitted", values);
     dispatch(loginUser(values));
   };

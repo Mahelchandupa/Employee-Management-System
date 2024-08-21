@@ -6,8 +6,8 @@ import { ROLES } from '../utils/permission';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
 
-  const { user } = useSelector(state => state.auth);
-  const { role } = user;
+  const { authUser } = useSelector(state => state.auth);
+  const { role } = authUser != null && authUser;
 
   return (
     <aside className={`fixed top-0 left-0 h-full z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-200 ease-in-out w-60 bg-sidebar-bg py-4 lg:transform-none lg:relative lg:translate-x-0`}>

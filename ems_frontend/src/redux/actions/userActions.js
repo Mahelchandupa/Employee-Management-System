@@ -1,5 +1,5 @@
 import api from "../../utils/api";
-import { CLEAR_USER_ERROR, CLEAR_USER_MESSAGE, RESET_PASSWORD_FAIL, RESET_PASSWORD_SUCCESS } from "../../utils/types";
+import { CLEAR_USER_ERROR, CLEAR_USER_MESSAGE, GET_USER_PROFILE, RESET_PASSWORD_FAIL, RESET_PASSWORD_SUCCESS, USER_ERROR } from "../../utils/types";
 
 export const resetUserPassword = (passwordData) => (dispatch) => {
 
@@ -24,6 +24,29 @@ export const resetUserPassword = (passwordData) => (dispatch) => {
       });
     });
 };
+
+export const getUserProfile = () => (dispatch) => {
+  api
+    .get("/users/profile", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+    .then((res) => {
+      dispatch({
+        type: GET_USER_PROFILE,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      const errorMessage = err.response?.data?.message || "An error occurred";
+      dispatch({
+        type: USER_ERROR,
+        payload: errorMessage,
+      });
+    });
+}
 
 export const clearUserMessage = () => ({
   type: CLEAR_USER_MESSAGE,

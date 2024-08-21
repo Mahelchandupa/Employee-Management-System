@@ -4,8 +4,8 @@ import { ROLES } from "../utils/permission";
 
 function HrPrivateRoute({ children }) {
 
-    const {isAuthenticated, user} = useSelector(state => state.auth);
-    const { role } = user;
+    const {isAuthenticated, authUser} = useSelector(state => state.auth);
+    const { role } = authUser;
 
     return role === ROLES.ROLE_MANAGER ? children  : <Navigate to='/401' />
 }

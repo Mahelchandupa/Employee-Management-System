@@ -11,12 +11,15 @@ import NewEmployeeForm from "../components/NewEmployeeForm";
 import NotPermission from "../pages/NotPermission";
 import HrPrivateRoute from "../components/HrPrivateRoute";
 import ErrorPage from "../pages/ErrorPage";
+import UserProfile from "../pages/UserProfile";
+import Enable2FA from "../pages/Enable2FA";
+import TwoFaVarification from "../pages/TwoFaVarification";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPage />,
+    // errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -53,10 +56,26 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/user-profile",
+        element: (
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/all-employees",
         element: (
           <PrivateRoute>
             <EmployeeTable />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/two-factor-auth",
+        element: (
+          <PrivateRoute>
+            <Enable2FA />
           </PrivateRoute>
         ),
       },
@@ -75,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: "/401",
         element: <NotPermission />,
+      },
+      {
+        path: "/two-fa-varification",
+        element: <TwoFaVarification />,
       },
     ],
   },
