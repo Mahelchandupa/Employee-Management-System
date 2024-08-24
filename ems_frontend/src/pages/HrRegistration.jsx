@@ -1,49 +1,29 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ResetPasswordValidation } from "../validation/Validation";
+import { RegisterNewHRValidation } from "../validation/Validation";
+import { clearEmployeeMessage, registerEmployee } from "../redux/actions/employeeActions";
 import useValidation from "../hooks/useValidation";
-import {
-  clearUserMessage,
-  resetUserPassword,
-} from "../redux/actions/userActions";
-import usePreviousRoute from "../hooks/usePreviousRoute";
 
-const ResetPassword = () => {
+const HrRegistration = () => {
   const { isAuthenticated, authUser } = useSelector((state) => state.auth);
   const { message, success } = useSelector((state) => state.user);
-
-  const previousRoute = usePreviousRoute();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     navigate("/login");
-  //   }
-  // }, [isAuthenticated, navigate]);
-
   useEffect(() => {
-    if (previousRoute) {
-      console.log("Previous route:", previousRoute.pathname);
+    if (!isAuthenticated) {
+      navigate("/login");
     }
-  }, [previousRoute]);
+  }, [isAuthenticated, navigate]);
 
-  useEffect(() => {
-    if (message) {
-      const timer = setTimeout(() => {
-        dispatch(clearUserMessage());
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [message, dispatch]);
 
   const initialState = {
-    currentPassword: "",
-    newPassword: "",
-    confirmationPassword: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: 'MANAGER'
   };
 
   const {
@@ -54,86 +34,122 @@ const ResetPassword = () => {
     handleBlur,
     handleSubmit,
     setValues,
-  } = useValidation(initialState, ResetPasswordValidation);
+  } = useValidation(initialState, RegisterNewHRValidation);
 
   const isFormValid =
-    Object.keys(errors).length === 0 &&
-    Object.values(values).every((value) => value);
+  errors && values && 
+  Object.keys(errors).length === 0 && 
+  Object.values(values).every((value) => value);
 
   const submitForm = () => {
-    dispatch(resetUserPassword(values));
+    dispatch(registerEmployee(values));
     if (success) {
       setValues(initialState);
     }
   };
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        dispatch(clearEmployeeMessage());
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [message, dispatch]);
+
   return (
-    <div className={` ${authUser?.firstAttempt ? 'h-screen' : 'h-full'} flex items-center justify-center bg-gray-100 dark:bg-gray-900`}>
+    <div className={` h-full flex items-center justify-center bg-gray-100 dark:bg-gray-900`}>
       <div className={`bg-white max-h-[700px] dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-4xl`}>
         <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-          Reset Password
+          Register New HR Manager
         </h2>
         <form onSubmit={handleSubmit(submitForm)}>
+          <div className="mt-4">
+            <label className="block text-gray-700 dark:text-gray-300 mb-2">
+              First Name <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={values.firstName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="First Name"
+              name="firstName"
+              id="firstName"
+            />
+            {touched.firstName && errors.firstName && (
+              <p className="text-red-400 text-sm mt-1">{errors.firstName}</p>
+            )}
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-gray-700 dark:text-gray-300 mb-2">
+              Last Name <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={values.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              placeholder="Last Name"
+              name="lastName"
+              id="lastName"
+            />
+            {touched.lastName && errors.lastName && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.lastName}
+              </p>
+            )}
+          </div>
+
           <div>
             <label className="block text-gray-700 dark:text-gray-300 mb-2">
-              Current Password <span className="text-red-400">*</span>
+              Email <span className="text-red-400">*</span>
             </label>
             <input
-              type="password"
-              value={values.currentPassword}
+              type="email"
+              value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
               className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Current Password"
-              name="currentPassword"
-              id="currentPassword"
+              placeholder="User Email"
+              name="email"
+              id="email"
             />
-            {touched.currentPassword && errors.currentPassword && (
+            {touched.email && errors.email && (
               <p className="text-red-400 text-sm mt-1">
-                {errors.currentPassword}
+                {errors.email}
               </p>
             )}
           </div>
 
           <div className="mt-4">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2">
-              New Password <span className="text-red-400">*</span>
-            </label>
-            <input
-              type="password"
-              value={values.newPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="New Password"
-              name="newPassword"
-              id="newPassword"
-            />
-            {touched.newPassword && errors.newPassword && (
-              <p className="text-red-400 text-sm mt-1">{errors.newPassword}</p>
-            )}
-          </div>
-
-          <div className="mt-4">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2">
-              Confirm Password <span className="text-red-400">*</span>
-            </label>
-            <input
-              type="password"
-              value={values.confirmationPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Confirm Password"
-              name="confirmationPassword"
-              id="confirmationPassword"
-            />
-            {touched.confirmationPassword && errors.confirmationPassword && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.confirmationPassword}
-              </p>
-            )}
-          </div>
+                  <label className="block text-gray-700 dark:text-gray-300 mb-2">
+                    Role <span className=" text-red-400">*</span>
+                  </label>
+                  <select
+                    value={values.role}
+                    onChange={handleChange}
+                    className="w-full py-1 px-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none"
+                    onBlur={handleBlur}
+                    name="role"
+                    id="role"
+                    disabled={values.role === "MANAGER"}
+                  >
+                    <option value="" disabled>
+                      Select Role
+                    </option>
+                    <option value="MANAGER">HR</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="EMPLOYEE">Employee</option>
+                  </select>
+                  {touched.role && errors.role && (
+                    <p className="text-red-400 text-sm mt-1">{errors.role}</p>
+                  )}
+                </div>
 
           <div className="mt-6 flex justify-end space-x-4">
             <button
@@ -170,4 +186,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default HrRegistration;

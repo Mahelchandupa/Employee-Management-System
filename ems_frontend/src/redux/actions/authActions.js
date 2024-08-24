@@ -1,11 +1,17 @@
 import { jwtDecode } from "jwt-decode";
 import { setAuthToken } from "../../utils/Authorization";
-import { LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, PROMPT_2FA_VERIFICATION } from "../../utils/types";
+import {
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  PROMPT_2FA_VERIFICATION,
+} from "../../utils/types";
 import api from "../../utils/api";
 import { ROLES } from "../../utils/permission";
 import { getEmployeeDetails } from "./employeeActions";
+import { persistor } from "../store";
 
-export const loginUser = (userData) => (dispatch) => {
+export const loginUser = (userData, navigate) => (dispatch) => {
 
   api
     .post("/auth/authenticate", userData)
@@ -13,16 +19,15 @@ export const loginUser = (userData) => (dispatch) => {
       const { mfaEnabled } = res.data;
 
       if (mfaEnabled) {
-        console.log('userdata',userData)
         dispatch({
           type: PROMPT_2FA_VERIFICATION,
-          payload: { email: userData.email }
+          payload: { email: userData.email },
         });
-        setTimeout(() => {  
-           window.location.href = `http://localhost:3000/two-fa-varification?email=${userData.email}`;
+        setTimeout(() => {
+          navigate("/two-fa-varification")
         }, 1000);
       } else {
-        dispatch(handleSuccessfulLogin(res.data));
+        dispatch(handleSuccessfulLogin(res.data, navigate));
       }
     })
     .catch((err) => {
@@ -64,19 +69,23 @@ export const refreshToken = () => (dispatch) => {
 };
 
 export const logoutUser = () => (dispatch) => {
-  api.post("/auth/logout", {},{
-    headers: {
-      "Content-Type": "application/json",
-      'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
+  api.post(
+    "/auth/logout",
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
     }
-  });
+  );
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   setAuthToken(null);
+  persistor.purge();
   dispatch({ type: LOGOUT });
   window.location.href = `http://localhost:3000/login`;
 };
-
 
 export const enable2FA = async (email) => {
   try {
@@ -84,34 +93,29 @@ export const enable2FA = async (email) => {
       params: { email },
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
-      }
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
     });
-    console.log(`secretImageUri: ${res.data.secretImageUri}`);
     return res.data;
   } catch (err) {
     throw new Error("Error enabling 2FA. Please try again.");
   }
 };
 
-
-export const verify2FA = (email, code) => (dispatch) => {
-  console.log(`call verify fun`, email, code)
+export const verify2FA = (email, code, navigate) => (dispatch) => {
+  console.log(`call verify fun`, email, code);
   api
     .post("/auth/verify", { email, code })
     .then((res) => {
-      dispatch(handleSuccessfulLogin(res.data));
+      dispatch(handleSuccessfulLogin(res.data, navigate));
     })
     .catch((err) => {
       dispatch(handle2FAVerificationFailure(err));
     });
 };
 
-
-export const handleSuccessfulLogin = (data) => (dispatch) => {
-
-  console.log('call this')
-  const { accessToken, refreshToken, mfaEnabled } = data;
+export const handleSuccessfulLogin = (data, navigate) => (dispatch) => {
+  const { accessToken, refreshToken, mfaEnabled, firstAttempt } = data;
 
   // Store tokens in local storage
   localStorage.setItem("accessToken", accessToken);
@@ -132,6 +136,7 @@ export const handleSuccessfulLogin = (data) => (dispatch) => {
       ...decoded,
       role: userRole,
       mfaEnabled,
+      firstAttempt
     },
   });
 
@@ -140,8 +145,12 @@ export const handleSuccessfulLogin = (data) => (dispatch) => {
     dispatch(getEmployeeDetails(decoded.sub));
   }
 
-  // Optional: Redirect user to the appropriate page
-  // window.location.href = "/";
+  if (firstAttempt) {
+    navigate("/first-attm-reset-password")
+  } else {
+    navigate("/")
+  }
+
 };
 
 export const handleLoginFailure = (error) => (dispatch) => {
@@ -168,6 +177,28 @@ export const handle2FAVerificationFailure = (error) => (dispatch) => {
     type: LOGIN_FAIL,
     payload: errorMessage,
   });
+};
+
+
+export const HrUserRegister = (userData, navigate) => (dispatch) => {
+
+  api
+    .post("/auth/register", userData)
+    .then((res) => {
+      const { mfaEnabled } = res.data;
+
+      if (mfaEnabled) {
+        dispatch({
+          type: PROMPT_2FA_VERIFICATION,
+          payload: { email: userData.email },
+        });
+      } else {
+        dispatch(handleSuccessfulLogin(res.data, navigate));
+      }
+    })
+    .catch((err) => {
+      dispatch(handleLoginFailure(err));
+    });
 };
 
 // export const loginUser = (userData) => (dispatch) => {

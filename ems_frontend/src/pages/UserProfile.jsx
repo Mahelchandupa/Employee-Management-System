@@ -2,12 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import EmployeeAvatar from "../assets/employee-avatar-ico.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { ROLES } from "../utils/permission";
 
 function UserProfile() {
-
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, authUser } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.user);
+
+  const { role } = authUser;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -39,13 +41,17 @@ function UserProfile() {
         </p>
       </div>
       <div className=" flex justify-between items-center px-3 lg:max-w-lg mx-auto mt-5">
-        <Link
-          to="/update-employee"
-          className="text-lg rounded-md text-black hover:font-medium dark:text-purple-500 hover:bg-primary-dark dark:hover:text-purple-300 transition duration-300"
-        >
-          Update Profile
-        </Link>
-        <span className=" dark:text-gray-300">|</span>
+        {role !== ROLES.ROLE_MANAGER && (
+          <div>
+            <Link
+              to={`/update-employee/${user?.id}`}
+              className="text-lg rounded-md text-black hover:font-medium dark:text-purple-500 hover:bg-primary-dark dark:hover:text-purple-300 transition duration-300"
+            >
+              Update Profile
+            </Link>
+            <span className=" dark:text-gray-300">|</span>
+          </div>
+        )}
         <Link
           to="/reset-password"
           className="text-lg rounded-md text-black hover:font-medium dark:text-purple-500 hover:bg-primary-dark dark:hover:text-purple-300 transition duration-300"

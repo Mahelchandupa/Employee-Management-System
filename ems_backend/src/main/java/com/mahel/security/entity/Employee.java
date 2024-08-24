@@ -1,5 +1,6 @@
 package com.mahel.security.entity;
 
+import com.mahel.security.config.AesEncryptionConverter;
 import com.mahel.security.entity.enums.Department;
 import com.mahel.security.entity.enums.EmploymentStatus;
 import com.mahel.security.entity.enums.Gender;
@@ -27,17 +28,22 @@ public class Employee {
     private String dob;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
     @Column(unique = true)
+    @Convert(converter = AesEncryptionConverter.class)
     private String email;
+
     private String mobile;
     private String homePhone;
     @Column(length = 1000)
     private String address;
     private String postalCode;
     private String nic;
-    private boolean firstAttempt;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
+
     private String city;
 
     //Job relate details
@@ -48,9 +54,13 @@ public class Employee {
     private Integer workHours;
 
     //Banking Details
+    @Convert(converter = AesEncryptionConverter.class)
     private String bank;
+    @Convert(converter = AesEncryptionConverter.class)
     private String branch;
+    @Convert(converter = AesEncryptionConverter.class)
     private String accName;
+    @Convert(converter = AesEncryptionConverter.class)
     private String accNumber;
 
     private LocalDateTime createDatetime;

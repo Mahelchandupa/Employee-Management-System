@@ -2,7 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "../components/SideBar";
 import Navbar from "../components/NavBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { setAuthToken } from "../utils/Authorization";
 import { LOGIN_SUCCESS, LOGOUT } from "../utils/types";
@@ -12,7 +12,7 @@ import { getEmployeeDetails } from "../redux/actions/employeeActions";
 const Root = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login" || location.pathname === "/401" || location.pathname === '/two-fa-varification';
+  const isLoginPage = location.pathname === "/login" || location.pathname === "/401" || location.pathname === '/two-fa-varification' || location.pathname === '/first-attm-reset-password';
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

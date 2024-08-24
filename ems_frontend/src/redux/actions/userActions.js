@@ -25,6 +25,35 @@ export const resetUserPassword = (passwordData) => (dispatch) => {
     });
 };
 
+export const resetUserPasswordFirstAttempt = (passwordData, navigate) => (dispatch) => {
+
+  api
+    .patch("/users/reset-password", passwordData, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+    .then((res) => {
+      dispatch({
+        type: RESET_PASSWORD_SUCCESS,
+        payload: res.data,
+      });
+
+      setTimeout(() => {
+        navigate('/')
+      }, 4000)
+    })
+    .catch((err) => {
+      const errorMessage = err.response?.data?.message || "An error occurred";
+      dispatch({
+        type: RESET_PASSWORD_FAIL,
+        payload: errorMessage,
+      });
+    });
+
+};
+
 export const getUserProfile = () => (dispatch) => {
   api
     .get("/users/profile", {

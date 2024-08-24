@@ -5,6 +5,7 @@ import { ImUsers } from "react-icons/im";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import EmployeeTable from "../components/EmployeeTable";
 
 const AdminDashboard = () => {
 
@@ -18,8 +19,9 @@ const AdminDashboard = () => {
   }, [isAuthenticated, navigate]);      
 
   return (
+    <div className=" w-full"> 
     <div className="flex flex-wrap -mx-4">
-      <div className="w-full lg:w-1/3 xl:w-1/4 px-4 mb-4">
+      {/* <div className="w-full lg:w-1/3 xl:w-1/4 px-4 mb-4">
         <div className="p-6 bg-white dark:bg-gray-800 rounded shadow border-b-2 border-yellow-300">
           <div className=" w-12 h-12 rounded-full flex items-center justify-center bg-yellow-300">
             <FaBuilding className="text-2xl text-black" />
@@ -70,7 +72,9 @@ const AdminDashboard = () => {
             Number of Clients
           </p>
         </div>
+      </div> */}
       </div>
+      <EmployeeTable />
     </div>
   );
 };

@@ -13,11 +13,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const { error, isAuthenticated } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/");
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   const initialState = {
     email: "",
@@ -31,10 +31,9 @@ const Login = () => {
     Object.keys(errors).length === 0 &&
     Object.values(values).every((value) => value);
 
-  const submitForm = (e) => {
-    // e.preventDefault();
+  const submitForm = () => {
     console.log("Form Submitted", values);
-    dispatch(loginUser(values));
+    dispatch(loginUser(values, navigate));
   };
 
   const [isRememberMeChecked, setRememberMeChecked] = useState(false);
@@ -54,10 +53,10 @@ const Login = () => {
         </div> */}
         <div className="flex items-center justify-center px-4">
           <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center">
-            <span className="font-pop text-white font-bold">G</span>
+            <span className="font-pop text-white font-bold">IT</span>
           </div>
           <span className="ml-2 font-pop text-blue-700 font-bold text-lg tracking-wide">
-            GOODEMPLOYEE
+            SOLUTION
           </span>
         </div>
         <img

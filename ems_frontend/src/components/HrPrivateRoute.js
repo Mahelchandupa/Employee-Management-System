@@ -7,7 +7,7 @@ function HrPrivateRoute({ children }) {
     const {isAuthenticated, authUser} = useSelector(state => state.auth);
     const { role } = authUser;
 
-    return role === ROLES.ROLE_MANAGER ? children  : <Navigate to='/401' />
+    return role === ROLES.ROLE_MANAGER || role === ROLES.ROLE_ADMIN ? children  : <Navigate to='/401' />
 }
 
 export default HrPrivateRoute

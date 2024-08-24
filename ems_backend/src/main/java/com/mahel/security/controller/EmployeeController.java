@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 @RequestMapping("/api/v1/employees")
-@PreAuthorize("hasRole('MANAGER') or hasRole('EMPLOYEE')")
+@PreAuthorize("hasRole('MANAGER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -29,7 +29,7 @@ public class EmployeeController {
 
     // HR Manager adds a new employee
     @PostMapping
-    @PreAuthorize("hasAuthority('employee:create')")
+    @PreAuthorize("hasAuthority('employee:create') or hasAuthority('manager:create')")
     public ResponseEntity<EmployeeResponseDTO> createEmployee(@RequestBody @Valid EmployeeSaveRequestDTO employeeSaveRequestDTO) throws DuplicateRecordException {
 
         EmployeeResponseDTO employeeResponseDTO = employeeService.saveEmployee(employeeSaveRequestDTO);
@@ -71,6 +71,15 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponseListDTO> getAllEmployees() {
 
         EmployeeResponseListDTO employeeResponseListDTO = employeeService.findAllEmployees();
+
+        return ResponseEntity.ok(employeeResponseListDTO);
+    }
+
+    @GetMapping("/role/{role}")
+    @PreAuthorize("hasAuthority('employee:read')")
+    public ResponseEntity<EmployeeResponseListDTO> getAllEmployeesByRole(@PathVariable String role) {
+
+        EmployeeResponseListDTO employeeResponseListDTO = employeeService.findAllEmployeesByRole(role);
 
         return ResponseEntity.ok(employeeResponseListDTO);
     }

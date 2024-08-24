@@ -12,15 +12,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
     <aside className={`fixed top-0 left-0 h-full z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-200 ease-in-out w-60 bg-sidebar-bg py-4 lg:transform-none lg:relative lg:translate-x-0`}>
       <div className="flex items-center justify-center px-4">
-        <div className="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center">
-          <span className="font-pop text-white font-bold">G</span>
+        <div className="w-7 h-7 bg-indigo-600 rounded-full flex items-center justify-center">
+          <span className="font-pop text-white font-bold">IT</span>
         </div>
-        <span className="ml-2 font-pop text-blue-700 font-bold text-xs tracking-wide">GOODEMPLOYEE</span>
+        <span className="ml-2 font-pop text-blue-700 font-bold text-xs tracking-wide">SOLUTION</span>
       </div>
       <nav className="mt-10">
         <SidebarItem to="/" icon={<FaChartBar />} label="Dashboard" toggleSidebar={toggleSidebar}/>
         {
-          role === ROLES.ROLE_MANAGER && 
+          (role === ROLES.ROLE_MANAGER || role === ROLES.ROLE_ADMIN ) && 
             <SidebarItem to="/manage-employee" icon={<FaUser />} label="Manage Employees" toggleSidebar={toggleSidebar}/>
         }
         <div className="ml-4 mt-6 text-gray-600 font-pop font-medium text-xs tracking-wide opacity-50">OTHERS</div>

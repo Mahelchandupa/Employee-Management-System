@@ -1,13 +1,9 @@
 package com.mahel.security.entity;
 
+import com.mahel.security.config.AesEncryptionConverter;
 import com.mahel.security.entity.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -30,10 +26,14 @@ public class User implements UserDetails {
   private Integer id;
   private String firstname;
   private String lastname;
+
+  @Convert(converter = AesEncryptionConverter.class)
   private String email;
+
   private String password;
   private boolean mfaEnabled;
   private String secret;
+  private boolean firstAttempt = true;
 
   @Enumerated(EnumType.STRING)
   private Role role;

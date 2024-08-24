@@ -29,18 +29,18 @@ public class EmployeeSaveRequestDTO {
 
     private Role role;
 
-    @NotNull(message = "Employment Status is required")
+//    @NotNull(message = "Employment Status is required")
     private EmploymentStatus employmentStatus;
 
-    @NotNull(message = "Department is required")
+//    @NotNull(message = "Department is required")
     private Department department;
 
-    @NotBlank(message = "Job title is required")
+//    @NotBlank(message = "Job title is required")
     private String jobTitle;
 
-    @NotNull(message = "Salary is required")
+//    @NotNull(message = "Salary is required")
     private double salary;
 
-    @NotNull(message = "Work hours is required")
+//    @NotNull(message = "Work hours is required")
     private Integer workHours;
 }

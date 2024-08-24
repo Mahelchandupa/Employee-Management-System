@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SecurityLock from "../assets/security-safety-lock-icon-vector-45499329-removebg-preview.png";
 import { useDispatch, useSelector } from "react-redux";
 import { verify2FA } from "../redux/actions/authActions";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function TwoFaVarification() {
   const dispatch = useDispatch();
@@ -16,9 +16,10 @@ function TwoFaVarification() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(verify2FA(authUser.email, code));
+  console.log(`auth users`, authUser)
+
+  const handleSubmit = () => {
+    dispatch(verify2FA(authUser?.email, code, navigate));
   };
 
   const handleCancel = () => {
@@ -29,10 +30,10 @@ function TwoFaVarification() {
     <div className="w-screen h-screen flex items-center justify-center">
       <div className="absolute flex items-center justify-center px-4 top-10 left-8">
         <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
-          <span className="font-pop text-white font-bold text-xl">G</span>
+          <span className="font-pop text-white font-bold text-xl">IT</span>
         </div>
         <span className="ml-2 font-pop text-blue-700 font-bold text-lg tracking-wide">
-          GOODEMPLOYEE
+          SOLUTION
         </span>
       </div>
       <div className="max-w-md min-h-[350px] border-2 border-slate-300 rounded-md p-6 mx-3">

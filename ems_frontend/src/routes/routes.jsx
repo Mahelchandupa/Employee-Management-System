@@ -14,6 +14,8 @@ import ErrorPage from "../pages/ErrorPage";
 import UserProfile from "../pages/UserProfile";
 import Enable2FA from "../pages/Enable2FA";
 import TwoFaVarification from "../pages/TwoFaVarification";
+import ResetPasswordFristAttempt from "../pages/ResetPasswordFristAttempt";
+import HrRegistration from "../pages/HrRegistration";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +50,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/update-employee",
+        path: "/update-employee/:id",
         element: (
           <PrivateRoute>
             <UpdateEmployeeForm />
@@ -84,6 +86,22 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ResetPassword />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/first-attm-reset-password",
+        element: (
+          <PrivateRoute>
+            <ResetPasswordFristAttempt />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/hr-regitration",
+        element: (
+          <PrivateRoute>
+            <HrRegistration />
           </PrivateRoute>
         ),
       },

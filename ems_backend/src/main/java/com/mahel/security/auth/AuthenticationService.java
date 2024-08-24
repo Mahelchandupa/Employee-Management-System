@@ -43,6 +43,7 @@ public class AuthenticationService {
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
         .role(request.getRole())
+            .firstAttempt(true)
 //            .mfaEnabled(request.isMfaEnabled())
         .build();
 
@@ -91,6 +92,7 @@ public class AuthenticationService {
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
             .mfaEnabled(false)
+            .firstAttempt(user.isFirstAttempt())
             .build();
   }
 
@@ -173,10 +175,13 @@ public class AuthenticationService {
      }
      var jwtToken = jwtService.generateToken(user);
      var refreshToken = jwtService.generateRefreshToken(user);
+     revokeAllUserTokens(user);
+     saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()
              .accessToken(jwtToken)
              .refreshToken(refreshToken)
              .mfaEnabled(user.isMfaEnabled())
+             .firstAttempt(user.isFirstAttempt())
              .build();
   }
 }

@@ -24,4 +24,7 @@ public interface EmployeeService {
     ResponseDTO deleteEmployee(Long id) throws RecordNotFoundException;
 
     EmployeeResponseDTO findByEmployeeEmail(String email) throws RecordNotFoundException;
+
+    EmployeeResponseListDTO findAllEmployeesByRole(String role);
+
 }

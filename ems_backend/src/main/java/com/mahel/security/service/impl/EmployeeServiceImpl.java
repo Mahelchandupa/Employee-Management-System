@@ -3,8 +3,11 @@ package com.mahel.security.service.impl;
 import com.mahel.security.dto.ResponseDTO;
 import com.mahel.security.dto.employee.*;
 import com.mahel.security.entity.Employee;
+import com.mahel.security.entity.Token;
 import com.mahel.security.entity.User;
+import com.mahel.security.entity.enums.Role;
 import com.mahel.security.repository.EmployeeRepository;
+import com.mahel.security.repository.TokenRepository;
 import com.mahel.security.repository.UserRepository;
 import com.mahel.security.service.EmployeeService;
 import com.mahel.security.service.exception.DuplicateRecordException;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,12 +39,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final JavaMailSender javaMailSender;
 
-    public EmployeeServiceImpl(ModelMapper mapper, EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, MailSender mailSender, JavaMailSender mailSender1, JavaMailSender javaMailSender, JavaMailSender javaMailSender1) {
+    private final TokenRepository tokenRepository;
+
+    public EmployeeServiceImpl(ModelMapper mapper, EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, MailSender mailSender, JavaMailSender mailSender1, JavaMailSender javaMailSender, JavaMailSender javaMailSender1, TokenRepository tokenRepository) {
         this.mapper = mapper;
         this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.javaMailSender = javaMailSender;
+        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -58,9 +66,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         String generatedPassword = generateSecurePassword();
         employee.setPassword(passwordEncoder.encode(generatedPassword));
 
-        // Mark the first login attempt
-        employee.setFirstAttempt(true);
-
         // Save employee
         employee = employeeRepository.save(employee);
 
@@ -72,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         user.setPassword(employee.getPassword());  // Already encode
         user.setRole(employee.getRole());  // Set the role
 
-        // Save user entity (you would have a UserRepository to save the user)
+        // Save user entity
         userRepository.save(user);
 
         // Send credentials via email (implement this method)
@@ -143,6 +148,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employee = employeeRepository.save(employee);
 
+        Optional<User> user = userRepository.findByEmail(employee.getEmail());
+
+        if (user.isPresent()) {
+            User existingUser = user.get();
+
+            if (!Objects.equals(employee.getFirstName(), existingUser.getFirstname())) {
+                existingUser.setFirstname(employee.getFirstName());
+            }
+            if (!Objects.equals(employee.getLastName(), existingUser.getLastname())) {
+                existingUser.setLastname(employee.getLastName());
+            }
+
+            userRepository.save(existingUser);
+        }
+
         return mapper.map(employee, EmployeeResponseDTO.class);
     }
 
@@ -179,7 +199,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeRepository.delete(employee);
 
-        return new ResponseDTO(String.format("Employee with id %d deleted successfully", id));
+        Optional<User> user = userRepository.findByEmail(employee.getEmail());
+
+        user.ifPresent(userRepository::delete);
+
+//        List<Token> tokenList = tokenRepository.findByUserId(user.get().getId());
+
+        tokenRepository.deleteAllTokenByUserId(user.get().getId());
+
+        return new ResponseDTO(String.format("Employee deleted successfully", id));
     }
 
     @Override
@@ -191,11 +219,30 @@ public class EmployeeServiceImpl implements EmployeeService {
            throw  new RecordNotFoundException("Employee not found");
         }
 
-        EmployeeResponseDTO employeeResponseDTO = mapper.map(employee, EmployeeResponseDTO.class);
-        employeeResponseDTO.setDepartment(employee.getDepartment().getValue());
-        employeeResponseDTO.setGender(employee.getGender().getValue());
-        employeeResponseDTO.setEmploymentStatus(employee.getEmploymentStatus().getValue());
+        return mapper.map(employee, EmployeeResponseDTO.class);
+    }
 
-        return employeeResponseDTO;
+    @Override
+    public EmployeeResponseListDTO findAllEmployeesByRole(String role) {
+
+        Role roleEnum;
+
+        try {
+            roleEnum = Role.valueOf(role.toUpperCase()); // Convert the string to enum
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid role: " + role); // Handle the case where the role is invalid
+        }
+
+        List<Employee> employees = employeeRepository.findAllByRole(roleEnum);
+
+        List<EmployeeDTO> employeeDTOS = employees.stream()
+                .map(employee -> mapper.map(employee, EmployeeDTO.class))
+                .collect(Collectors.toList());
+
+        EmployeeResponseListDTO employeeResponseListDTO = new EmployeeResponseListDTO();
+        employeeResponseListDTO.setEmployees(employeeDTOS);
+        employeeResponseListDTO.setTotalRecord(employeeDTOS.size());
+
+        return employeeResponseListDTO;
     }
 }

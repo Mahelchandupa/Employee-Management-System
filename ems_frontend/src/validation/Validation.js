@@ -87,3 +87,34 @@ export function ResetPasswordValidation(values) {
 
   return errors;
 }
+
+
+export function RegisterNewHRValidation(values) {
+  let errors = {};
+
+  if (!values.firstName) {
+    errors.firstName = "First name is required";
+  } else if (values.firstName.length < 3) {
+    errors.firstName = "First name must be at least 3 characters";
+  }
+
+  if (!values.lastName) {
+    errors.lastName = "Last name is required";
+  } else if (values.lastName.length < 3) {
+    errors.lastName = "Last name must be at least 3 characters";
+  }
+
+  if (!values.email) {
+    errors.email = "Email is required";
+  } else if (
+    !/^[\w-.]+@[a-zA-Z\d-]+(\.[a-zA-Z\d-]+)*\.[a-zA-Z]{2,}$/.test(values.email)
+  ) {
+    errors.email = "Email address is invalid";
+  }
+
+  if (!values.role) {
+    errors.role = "Role is required";
+  }
+
+  return errors; // Ensure errors object is returned
+}

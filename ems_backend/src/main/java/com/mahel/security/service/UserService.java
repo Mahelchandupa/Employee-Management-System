@@ -42,10 +42,14 @@ public class UserService {
 
             employee.setPassword(passwordEncoder.encode(request.getNewPassword()));
 
-            if (employee.isFirstAttempt()) {
-                employee.setFirstAttempt(false);
-            }
+//            if (employee.isFirstAttempt()) {
+//                employee.setFirstAttempt(false);
+//            }
             employeeRepository.save(employee);
+        }
+
+        if (user.isFirstAttempt()) {
+            user.setFirstAttempt(false);
         }
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
@@ -55,6 +59,9 @@ public class UserService {
 
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Password Change Successfully");
+        responseDTO.setData(
+                user.isFirstAttempt()
+        );
 
         return responseDTO;
     }

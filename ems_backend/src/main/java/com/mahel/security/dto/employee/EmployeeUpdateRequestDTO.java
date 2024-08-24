@@ -25,52 +25,52 @@ public class EmployeeUpdateRequestDTO {
     @NotBlank(message = "Email is required")
     private String email;
 
-    @NotBlank(message = "Mobile is required")
+//    @NotBlank(message = "Mobile is required")
     private String mobile;
 
-    @NotBlank(message = "Date of birth is required")
+//    @NotBlank(message = "Date of birth is required")
     private String dob;
 
-    @NotNull(message = "Gender is required")
+//    @NotNull(message = "Gender is required")
     private Gender gender;
 
-    @NotBlank(message = "Home mobile is required")
+//    @NotBlank(message = "Home mobile is required")
     private String homePhone;
 
-    @NotBlank(message = "Address is required")
+//    @NotBlank(message = "Address is required")
     private String address;
 
     private String postalCode;
 
     private String city;
 
-    @NotBlank(message = "NIC is required")
+//    @NotBlank(message = "NIC is required")
     private String nic;
 
 
     //
-    @NotNull(message = "Employment Status is required")
+//    @NotNull(message = "Employment Status is required")
     private EmploymentStatus employmentStatus;
 
-    @NotNull(message = "Department is required")
+//    @NotNull(message = "Department is required")
     private Department department;
 
-    @NotBlank(message = "Job title is required")
+//    @NotBlank(message = "Job title is required")
     private String jobTitle;
 
-    @NotNull(message = "Salary is required")
+//    @NotNull(message = "Salary is required")
     private double salary;
 
-    @NotNull(message = "Work hours is required")
+//    @NotNull(message = "Work hours is required")
     private Integer workHours;
 
     //Banking Details
-    @NotBlank(message = "Bank is required")
+//    @NotBlank(message = "Bank is required")
     private String bank;
-    @NotBlank(message = "Branch is required")
+//    @NotBlank(message = "Branch is required")
     private String branch;
-    @NotBlank(message = "Acc name is required")
+//    @NotBlank(message = "Acc name is required")
     private String accName;
-    @NotBlank(message = "Acc number is required")
+//    @NotBlank(message = "Acc number is required")
     private String accNumber;
 }
