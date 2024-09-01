@@ -30,6 +30,7 @@ const Navbar = ({ toggleSidebar }) => {
       return "Update Profile";
     }
     if (location.pathname === "/reset-password") return "Reset Password";
+    if (location.pathname === "/user-profile") return "Profile";
   
     return "Dashboard";
   }

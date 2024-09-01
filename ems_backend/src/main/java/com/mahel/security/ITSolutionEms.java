@@ -11,10 +11,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class SecurityApplication {
+public class ITSolutionEms {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SecurityApplication.class, args);
+		SpringApplication.run(ITSolutionEms.class, args);
 	}
 
 	@Bean
@@ -25,7 +25,7 @@ public class SecurityApplication {
 			var admin = RegisterRequest.builder()
 					.firstname("Admin")
 					.lastname("Admin")
-					.email("admin@mail.com")
+					.email("admin@gmail.com")
 					.password("password")
 					.role(Role.ADMIN)
 					.build();

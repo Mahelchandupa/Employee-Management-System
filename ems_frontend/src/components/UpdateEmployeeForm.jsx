@@ -30,7 +30,7 @@ const UpdateEmployeeForm = () => {
     mobile: "",
     address: "",
     city: "",
-    postalcode: "",
+    postalCode: "",
     jobTitle: "",
     department: "",
     employmentStatus: "",
@@ -57,6 +57,8 @@ const UpdateEmployeeForm = () => {
       setValues(user);
     }
   }, [user]);
+
+  console.log("user", user);
 
   const isFormValid = true;
 
@@ -235,9 +237,9 @@ const UpdateEmployeeForm = () => {
                     <option value="" disabled>
                       Select Gender
                     </option>
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                    <option value="OTHER">Other</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                   </select>
                   {touched.gender && errors.gender && (
                     <p className="text-red-400 text-sm mt-1">{errors.gender}</p>
@@ -291,7 +293,7 @@ const UpdateEmployeeForm = () => {
                   </label>
                   <input
                     type="text"
-                    value={values.postalcode}
+                    value={values.postalCode}
                     onChange={handleChange}
                     className="w-full py-1 px-2.5  border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     placeholder="Postal Code"
@@ -593,7 +595,7 @@ const UpdateEmployeeForm = () => {
                     : "bg-purple-600 hover:bg-purple-700"
                 } text-white py-2 px-4 rounded-md shadow-sm `}
               >
-                Submit
+                Update
               </button>
             </div>
           </form>

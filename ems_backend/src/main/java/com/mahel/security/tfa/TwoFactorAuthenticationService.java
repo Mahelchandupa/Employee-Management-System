@@ -22,9 +22,9 @@ public class TwoFactorAuthenticationService {
 
     public String generateQrCodeImageUri(String secret) {
         QrData data = new QrData.Builder()
-                .label("Emp")
+                .label("ITS")
                 .secret(secret)
-                .issuer("Employee Management System")
+                .issuer("IT Solution")
                 .algorithm(HashingAlgorithm.SHA512)
                 .digits(6)
                 .period(30)

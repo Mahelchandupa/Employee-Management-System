@@ -28,10 +28,10 @@ const Enable2FA = () => {
           Two-Factor Authentication
         </h2>
 
-        {authUser.mfaEnable ? (
+        {authUser.mfaEnabled ? (
           <div>
               <img className="w-40 h-40 mx-auto" src={SecurityLock} alt="Security Lock" />
-              <p className="text-gray-800 dark:text-gray-300">
+              <p className="text-gray-800 dark:text-gray-300 text-center">
                 You All Ready Enable Two Factor Authentication
               </p>
           </div>

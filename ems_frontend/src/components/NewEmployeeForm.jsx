@@ -3,7 +3,7 @@ import { RegisterNewEmpValidation } from "../validation/Validation";
 import useValidation from "../hooks/useValidation";
 import { useDispatch, useSelector } from "react-redux";
 import { PERMISSIONS, ROLES } from "../utils/permission";
-import { clearEmployeeMessage, registerEmployee } from "../redux/actions/employeeActions";
+import { clearEmployeeError, clearEmployeeMessage, registerEmployee } from "../redux/actions/employeeActions";
 
 const NewEmployeeForm = () => {
   const { authUser } = useSelector((state) => state.auth);
@@ -27,6 +27,7 @@ const NewEmployeeForm = () => {
     if (message) {
       const timer = setTimeout(() => {
         dispatch(clearEmployeeMessage());
+        dispatch(clearEmployeeError());
       }, 3000); 
 
       return () => clearTimeout(timer);

@@ -18,7 +18,8 @@ function TwoFaVarification() {
 
   console.log(`auth users`, authUser)
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     dispatch(verify2FA(authUser?.email, code, navigate));
   };
 

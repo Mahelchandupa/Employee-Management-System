@@ -10,7 +10,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const { role } = authUser != null && authUser;
 
   return (
-    <aside className={`fixed top-0 left-0 h-full z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-200 ease-in-out w-60 bg-sidebar-bg py-4 lg:transform-none lg:relative lg:translate-x-0`}>
+    <aside className={`fixed top-0 left-0 h-full z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} -translate-x-full transition-transform duration-200 ease-in-out w-60 bg-sidebar-bg py-4 lg:transform-none lg:relative lg:translate-x-0`}>
       <div className="flex items-center justify-center px-4">
         <div className="w-7 h-7 bg-indigo-600 rounded-full flex items-center justify-center">
           <span className="font-pop text-white font-bold">IT</span>
@@ -24,9 +24,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <SidebarItem to="/manage-employee" icon={<FaUser />} label="Manage Employees" toggleSidebar={toggleSidebar}/>
         }
         <div className="ml-4 mt-6 text-gray-600 font-pop font-medium text-xs tracking-wide opacity-50">OTHERS</div>
-        <SidebarItem to="/settings" icon={<FaCog />} label="Settings" />
-        <SidebarItem to="/accounts" icon={<FaUser />} label="Accounts" />
-        <SidebarItem to="/help" icon={<FaQuestionCircle />} label="Help" />
+        {/* <SidebarItem to="/settings" icon={<FaCog />} label="Settings" /> */}
+        <SidebarItem to="/user-profile" icon={<FaUser />} label="Profile" />
+        {/* <SidebarItem to="/help" icon={<FaQuestionCircle />} label="Help" /> */}
       </nav>
       <button className="absolute top-4 right-4 lg:hidden text-xl dark:text-white" onClick={toggleSidebar}>X</button>
     </aside>

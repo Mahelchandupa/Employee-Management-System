@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RegisterNewHRValidation } from "../validation/Validation";
-import { clearEmployeeMessage, registerEmployee } from "../redux/actions/employeeActions";
+import {
+  clearEmployeeMessage,
+  registerEmployee,
+} from "../redux/actions/employeeActions";
 import useValidation from "../hooks/useValidation";
 
 const HrRegistration = () => {
@@ -18,12 +21,11 @@ const HrRegistration = () => {
     }
   }, [isAuthenticated, navigate]);
 
-
   const initialState = {
     firstName: "",
     lastName: "",
     email: "",
-    role: 'MANAGER'
+    role: "MANAGER"
   };
 
   const {
@@ -37,9 +39,10 @@ const HrRegistration = () => {
   } = useValidation(initialState, RegisterNewHRValidation);
 
   const isFormValid =
-  errors && values && 
-  Object.keys(errors).length === 0 && 
-  Object.values(values).every((value) => value);
+    errors &&
+    values &&
+    Object.keys(errors).length === 0 &&
+    Object.values(values).every((value) => value);
 
   const submitForm = () => {
     dispatch(registerEmployee(values));
@@ -59,8 +62,12 @@ const HrRegistration = () => {
   }, [message, dispatch]);
 
   return (
-    <div className={` h-full flex items-center justify-center bg-gray-100 dark:bg-gray-900`}>
-      <div className={`bg-white max-h-[700px] dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-4xl`}>
+    <div
+      className={` h-full flex items-center justify-center bg-gray-100 dark:bg-gray-900`}
+    >
+      <div
+        className={`bg-white max-h-[700px] dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-4xl`}
+      >
         <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
           Register New HR Manager
         </h2>
@@ -99,9 +106,7 @@ const HrRegistration = () => {
               id="lastName"
             />
             {touched.lastName && errors.lastName && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.lastName}
-              </p>
+              <p className="text-red-400 text-sm mt-1">{errors.lastName}</p>
             )}
           </div>
 
@@ -120,36 +125,34 @@ const HrRegistration = () => {
               id="email"
             />
             {touched.email && errors.email && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.email}
-              </p>
+              <p className="text-red-400 text-sm mt-1">{errors.email}</p>
             )}
           </div>
 
           <div className="mt-4">
-                  <label className="block text-gray-700 dark:text-gray-300 mb-2">
-                    Role <span className=" text-red-400">*</span>
-                  </label>
-                  <select
-                    value={values.role}
-                    onChange={handleChange}
-                    className="w-full py-1 px-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none"
-                    onBlur={handleBlur}
-                    name="role"
-                    id="role"
-                    disabled={values.role === "MANAGER"}
-                  >
-                    <option value="" disabled>
-                      Select Role
-                    </option>
-                    <option value="MANAGER">HR</option>
-                    <option value="ADMIN">Admin</option>
-                    <option value="EMPLOYEE">Employee</option>
-                  </select>
-                  {touched.role && errors.role && (
-                    <p className="text-red-400 text-sm mt-1">{errors.role}</p>
-                  )}
-                </div>
+            <label className="block text-gray-700 dark:text-gray-300 mb-2">
+              Role <span className=" text-red-400">*</span>
+            </label>
+            <select
+              value={values.role}
+              onChange={handleChange}
+              className="w-full py-1 px-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none"
+              onBlur={handleBlur}
+              name="role"
+              id="role"
+              disabled={values.role === "MANAGER"}
+            >
+              <option value="" disabled>
+                Select Role
+              </option>
+              <option value="MANAGER">HR</option>
+              <option value="ADMIN">Admin</option>
+              <option value="EMPLOYEE">Employee</option>
+            </select>
+            {touched.role && errors.role && (
+              <p className="text-red-400 text-sm mt-1">{errors.role}</p>
+            )}
+          </div>
 
           <div className="mt-6 flex justify-end space-x-4">
             <button

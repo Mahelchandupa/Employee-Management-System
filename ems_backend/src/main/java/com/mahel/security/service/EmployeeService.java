@@ -19,12 +19,9 @@ public interface EmployeeService {
 
     EmployeeResponseDTO findByEmployeeId(Long id) throws RecordNotFoundException;
 
-    EmployeeResponseListDTO findAllEmployees();
-
     ResponseDTO deleteEmployee(Long id) throws RecordNotFoundException;
 
     EmployeeResponseDTO findByEmployeeEmail(String email) throws RecordNotFoundException;
 
-    EmployeeResponseListDTO findAllEmployeesByRole(String role);
-
+    EmployeeResponseListDTO getAllEmployeesByRole(String role, String department, String firstName, String lastName);
 }
