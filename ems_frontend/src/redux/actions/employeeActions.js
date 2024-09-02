@@ -95,30 +95,6 @@ export const getAllEmployees = () => async (dispatch) => {
      });
 }
 
-// export const getAllEmployeesByRole = (role) => async (dispatch) => {
-
-//     api
-//      .get(`/employees/role/${role}`, {
-//          headers: {
-//              "Content-Type": "application/json",
-//              "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-//          }
-//      })
-//      .then((res) => {
-//          dispatch({
-//              type: GET_EMPLOYEES_SUCCESS,
-//              payload: res.data
-//          });
-//      })
-//      .catch((err) => {
-//          const errorMessage = err.response?.data?.message || "An error occurred";
-//          dispatch({
-//              type: GET_EMPLOYEES_FAIL,
-//              payload: errorMessage
-//          });
-//      });
-// }
-
 export const getAllEmployeesByRole = (role, searchQuery = "", department = "") => async (dispatch) => {
     const params = new URLSearchParams();
 

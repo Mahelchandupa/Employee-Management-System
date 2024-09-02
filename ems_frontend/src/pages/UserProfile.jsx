@@ -96,6 +96,9 @@ function UserProfile() {
               <p className="text-gray-700 dark:text-gray-300">
                 <strong>NIC:</strong> {user?.nic}
               </p>
+              <p className="text-gray-700 dark:text-gray-300">
+                <strong>City:</strong> {user?.city}
+              </p>
             </div>
           </div>
 

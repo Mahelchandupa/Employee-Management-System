@@ -27,6 +27,7 @@ public class EmployeeResponseDTO {
     private String address;
     private String postalCode;
     private String nic;
+    private String city;
 
     //Job relate details
     private EmploymentStatus employmentStatus;
