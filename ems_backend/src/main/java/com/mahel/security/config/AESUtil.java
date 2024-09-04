@@ -1,7 +1,5 @@
 package com.mahel.security.config;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,7 +18,7 @@ public class AESUtil {
 
     public String encrypt(String data) throws Exception {
         if (data == null) {
-            return null; // or you could return an empty string if preferred
+            return null;
         }
 
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
