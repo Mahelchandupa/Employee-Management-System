@@ -3,6 +3,7 @@ package com.mahel.security.dto.employee;
 import com.mahel.security.entity.enums.Department;
 import com.mahel.security.entity.enums.EmploymentStatus;
 import com.mahel.security.entity.enums.Role;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class EmployeeSaveRequestDTO {
     private String lastName;
 
     @NotBlank(message = "Email is required")
+    @Email
     private String email;
 
     private String password;
