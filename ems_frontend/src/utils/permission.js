@@ -10,10 +10,10 @@ export const PERMISSIONS = {
     ADMIN_CREATE : "admin:create" ,
     ADMIN_DELETE : "admin:delete" ,
 
-    MANAGER_READ : "management:read" ,
-    MANAGER_UPDATE : "management:update" ,
-    MANAGER_CREATE : "management:create" ,
-    MANAGER_DELETE : "management:delete" ,
+    MANAGER_READ : "manager:read" ,
+    MANAGER_UPDATE : "manager:update" ,
+    MANAGER_CREATE : "manager:create" ,
+    MANAGER_DELETE : "manager:delete" ,
 
     EMPLOYEE_READ : "employee:read" ,
     EMPLOYEE_UPDATE : "employee:update" ,

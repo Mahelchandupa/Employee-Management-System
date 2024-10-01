@@ -63,7 +63,7 @@ function TwoFaVarification() {
           </div>
         </form>
         {/* Error Message */}
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && <p className="text-red-500 text-sm mb-4 mt-4 text-center">{error}</p>}
       </div>
     </div>
   );

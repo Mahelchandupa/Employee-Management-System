@@ -25,4 +25,12 @@ public class UserController {
         ResponseDTO res =  service.changePassword(request, connectedUser);
         return ResponseEntity.ok(res);
     }
+
+//    @PutMapping("/update")
+//    public ResponseEntity<ResponseDTO> updateUser(
+//          @RequestBody UserRequestDTO request
+//    ) throws IllegalStateException {
+//        ResponseDTO res =  service.updateUser(request);
+//        return ResponseEntity.ok(res);
+//    }
 }

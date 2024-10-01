@@ -39,7 +39,7 @@ public class EmployeeController {
 
     // Employee updates their own profile
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('employee:update')")
+    @PreAuthorize("hasAuthority('employee:update') or hasAuthority('manager:update')")
     public ResponseEntity<EmployeeResponseDTO> updateEmployee(
             @PathVariable Long id,
             @RequestBody @Valid EmployeeUpdateRequestDTO employeeRequestDTO) throws RecordNotFoundException {
@@ -67,7 +67,7 @@ public class EmployeeController {
 
     // HR Manager only can delete employee
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('employee:delete')")
+    @PreAuthorize("hasAuthority('employee:delete') or hasAuthority('manager:delete')")
     public ResponseEntity<ResponseDTO> deleteEmployee(@PathVariable Long id) throws RecordNotFoundException {
 
         ResponseDTO responseDTO = employeeService.deleteEmployee(id);

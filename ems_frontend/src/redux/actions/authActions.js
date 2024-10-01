@@ -115,7 +115,7 @@ export const verify2FA = (email, code, navigate) => (dispatch) => {
 };
 
 export const handleSuccessfulLogin = (data, navigate) => (dispatch) => {
-  const { accessToken, refreshToken, mfaEnabled, firstAttempt } = data;
+  const { accessToken, refreshToken, mfaEnabled, firstAttempt, firstName, lastName, email } = data;
 
   // Store tokens in local storage
   localStorage.setItem("accessToken", accessToken);
@@ -136,7 +136,10 @@ export const handleSuccessfulLogin = (data, navigate) => (dispatch) => {
       ...decoded,
       role: userRole,
       mfaEnabled,
-      firstAttempt
+      firstAttempt,
+      firstName,
+      lastName,
+      email
     },
   });
 

@@ -30,10 +30,15 @@ function UserProfile() {
                   </div> */}
         </div>
         <h2 className="mt-4 text-xl lg:text-5xl font-bold text-gray-800 dark:text-white capitalize">
-          {user?.firstName} {user?.lastName}
+          {authUser.role === ROLES.ROLE_EMPLOYEE
+            ? user?.firstName
+            : authUser.firstName}{" "}
+          {authUser.role === ROLES.ROLE_EMPLOYEE
+            ? user?.lastName
+            : authUser.lastName}
         </h2>
         <p className=" text-lg lg:text-xl text-gray-500 dark:text-gray-400">
-          {user?.jobTitle}
+          {authUser.role === ROLES.ROLE_EMPLOYEE ? user?.jobTitle : authUser.role === ROLES.ROLE_MANAGER ? 'Manager' : 'Admin'} 
         </p>
         <p className="mt-1 text-lg  bg-yellow-200 px-6 dark:bg-yellow-100 text-gray-500 dark:text-black">
           {user?.email}
@@ -49,9 +54,9 @@ function UserProfile() {
             >
               Update Profile
             </Link>
+            <span className=" dark:text-gray-300">|</span>
           </div>
         )}
-        <span className=" dark:text-gray-300">|</span>
         <Link
           to="/reset-password"
           className=" text-sm md:text-lg rounded-md text-black hover:font-medium dark:text-purple-500 hover:bg-primary-dark dark:hover:text-purple-300 transition duration-300"
@@ -148,7 +153,6 @@ function UserProfile() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

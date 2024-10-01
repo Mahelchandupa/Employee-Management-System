@@ -23,8 +23,8 @@ public class ITSolutionEms {
 	) {
 		return args -> {
 			var admin = RegisterRequest.builder()
-					.firstname("Admin")
-					.lastname("Admin")
+					.firstname("Harry")
+					.lastname("Styles")
 					.email("admin@gmail.com")
 					.password("password")
 					.role(Role.ADMIN)

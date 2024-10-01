@@ -93,6 +93,9 @@ public class AuthenticationService {
             .refreshToken(refreshToken)
             .mfaEnabled(false)
             .firstAttempt(user.isFirstAttempt())
+            .firstName(user.getFirstname())
+            .lastName(user.getLastname())
+            .email(user.getEmail())
             .build();
   }
 

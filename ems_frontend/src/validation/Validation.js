@@ -74,7 +74,7 @@ export function ResetPasswordValidation(values) {
   } 
 
   if (!values.newPassword) {
-    errors.newPassword = "newPassword is required";
+    errors.newPassword = "New Password is required";
   } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(values.newPassword)) {
     errors.newPassword ="Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character";
   }

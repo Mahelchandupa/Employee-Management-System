@@ -16,6 +16,7 @@ import Enable2FA from "../pages/Enable2FA";
 import TwoFaVarification from "../pages/TwoFaVarification";
 import ResetPasswordFristAttempt from "../pages/ResetPasswordFristAttempt";
 import HrRegistration from "../pages/HrRegistration";
+import UpdateManagerForm from "../components/UpdateManagerForm";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <UpdateEmployeeForm />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/update-manager/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateManagerForm />
           </PrivateRoute>
         ),
       },

@@ -19,4 +19,7 @@ public class AuthenticationResponse {
   private boolean mfaEnabled;
   private String secretImageUri;
   private boolean firstAttempt;
+  private String firstName;
+  private String lastName;
+  private String email;
 }

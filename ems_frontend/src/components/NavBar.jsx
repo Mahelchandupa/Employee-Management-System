@@ -52,6 +52,8 @@ const Navbar = ({ toggleSidebar }) => {
     setIsProfileMenuOpen(false);
   };
 
+  console.log('authUser', authUser);
+
   return (
     <header className="flex items-center justify-between p-4 bg-white shadow-md dark:bg-gray-800 w-full z-30 lg:w-auto lg:px-6 z-20">
       <div className="flex items-center">
@@ -107,13 +109,13 @@ const Navbar = ({ toggleSidebar }) => {
                   </div> */}
                 </div>
                 <h2 className="mt-4 text-xl font-bold text-gray-800 dark:text-white capitalize">
-                  {user?.firstName}
+                  {authUser.role === ROLES.ROLE_EMPLOYEE ?  user?.firstName : authUser.firstName}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {user?.jobTitle}
+                  {authUser.role === ROLES.ROLE_EMPLOYEE ? user?.jobTitle : ''}
                 </p>
                 <p className="mt-1 text-xs text-gray-700 bg-yellow-200 px-2 dark:bg-yellow-100">
-                  {user?.email}
+                  {authUser.role === ROLES.ROLE_EMPLOYEE ? user?.email : authUser.email}
                 </p>
                 <Link
                   to="/user-profile"
