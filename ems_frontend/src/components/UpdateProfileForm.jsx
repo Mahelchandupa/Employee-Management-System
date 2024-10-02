@@ -11,9 +11,9 @@ import {
 } from "../redux/actions/employeeActions";
 import Tab from "./Tab";
 
-const UpdateEmployeeForm = () => {
+const UpdateProfileForm = () => {
   const { authUser } = useSelector((state) => state.auth);
-  const { user, message, error, success } = useSelector((state) => state.user);
+  const { user, message, error, success, loginUser } = useSelector((state) => state.user);
 
   const { role, authorities } = authUser;
   const dispatch = useDispatch();
@@ -53,11 +53,12 @@ const UpdateEmployeeForm = () => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      setValues(user);
+    if (loginUser) {
+      setValues(loginUser);
     }
-  }, [user]);
+  }, [loginUser]);
 
+  console.log("user", user);
 
   const isFormValid = true;
 
@@ -168,7 +169,6 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="nic"
                     id="nic"
-                    disabled={role === ROLES.ROLE_MANAGER}
                   />
                   {touched.nic && errors.nic && (
                     <p className="text-red-400 text-sm mt-1">{errors.nic}</p>
@@ -348,7 +348,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="jobTitle"
                     id="jobTitle"
-                    disabled={role !== ROLES.ROLE_MANAGER}
+                    disabled={role === ROLES.ROLE_MANAGER || role === ROLES.ROLE_EMPLOYEE}
                   />
                   {touched.jobTitle && errors.jobTitle && (
                     <p className="text-red-400 text-sm mt-1">
@@ -368,7 +368,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="department"
                     id="department"
-                    disabled={role !== ROLES.ROLE_MANAGER}
+                    disabled={role === ROLES.ROLE_MANAGER || role === ROLES.ROLE_EMPLOYEE}
                   >
                     <option value="" disabled>
                       Select Department
@@ -402,7 +402,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="employmentStatus"
                     id="employmentStatus"
-                    disabled={role !== ROLES.ROLE_MANAGER}
+                    disabled={role === ROLES.ROLE_MANAGER || role === ROLES.ROLE_EMPLOYEE}
                   >
                     <option value="" disabled>
                       Select status
@@ -435,7 +435,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="workHours"
                     id="workHours"
-                    disabled={role !== ROLES.ROLE_MANAGER}
+                    disabled={role === ROLES.ROLE_MANAGER || role === ROLES.ROLE_EMPLOYEE}
                   />
                   {touched.workHours && errors.workHours && (
                     <p className="text-red-400 text-sm mt-1">
@@ -457,7 +457,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="salary"
                     id="salary"
-                    disabled={role !== ROLES.ROLE_MANAGER}
+                    disabled={role === ROLES.ROLE_MANAGER || role === ROLES.ROLE_EMPLOYEE}
                   />
                   {touched.salary && errors.salary && (
                     <p className="text-red-400 text-sm mt-1">{errors.salary}</p>
@@ -493,7 +493,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="bank"
                     id="bank"
-                    disabled={role === ROLES.ROLE_MANAGER}
+                    // disabled={role === ROLES.ROLE_MANAGER}
                   />
                   {touched.bank && errors.bank && (
                     <p className="text-red-400 text-sm mt-1">{errors.bank}</p>
@@ -512,7 +512,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="branch"
                     id="branch"
-                    disabled={role === ROLES.ROLE_MANAGER}
+                    // disabled={role === ROLES.ROLE_MANAGER}
                   />
                   {touched.branch && errors.branch && (
                     <p className="text-red-400 text-sm mt-1">{errors.branch}</p>
@@ -535,7 +535,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="accName"
                     id="accName"
-                    disabled={role === ROLES.ROLE_MANAGER}
+                    // disabled={role === ROLES.ROLE_MANAGER}
                   />
                   {touched.accName && errors.accName && (
                     <p className="text-red-400 text-sm mt-1">
@@ -557,7 +557,7 @@ const UpdateEmployeeForm = () => {
                     onBlur={handleBlur}
                     name="accNumber"
                     id="accNumber"
-                    disabled={role === ROLES.ROLE_MANAGER}
+                    // disabled={role === ROLES.ROLE_MANAGER}
                   />
                   {touched.accNumber && errors.accNumber && (
                     <p className="text-red-400 text-sm mt-1">
@@ -603,4 +603,4 @@ const UpdateEmployeeForm = () => {
   );
 };
 
-export default UpdateEmployeeForm;
+export default UpdateProfileForm;

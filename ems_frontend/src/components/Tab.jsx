@@ -78,7 +78,7 @@ const Tab = () => {
       <div className="mt-4">
         {activeTab === 0 && <EmployeeTable />}
         {activeTab === 1 && <ManagerTable />}
-        {activeTab === 2 && <HrRegistration />}
+        {activeTab === 2 && (role === ROLES.ROLE_ADMIN ? <HrRegistration /> : <NewEmployeeForm />)}
       </div>
     </div>
   );

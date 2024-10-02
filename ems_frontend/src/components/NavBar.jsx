@@ -19,7 +19,7 @@ const Navbar = ({ toggleSidebar }) => {
   const location = useLocation();
   const { authUser } = useSelector(state => state.auth);
   const { role } = authUser != null && authUser;
-  const { user } = useSelector(state => state.user);
+  const { user, loginUser } = useSelector(state => state.user);
 
   const getNavTitle = () => {
     if (location.pathname === "/") return "Dashboard";
@@ -53,6 +53,7 @@ const Navbar = ({ toggleSidebar }) => {
   };
 
   console.log('authUser', authUser);
+  console.log('user', user);  
 
   return (
     <header className="flex items-center justify-between p-4 bg-white shadow-md dark:bg-gray-800 w-full z-30 lg:w-auto lg:px-6 z-20">
@@ -109,13 +110,13 @@ const Navbar = ({ toggleSidebar }) => {
                   </div> */}
                 </div>
                 <h2 className="mt-4 text-xl font-bold text-gray-800 dark:text-white capitalize">
-                  {authUser.role === ROLES.ROLE_EMPLOYEE ?  user?.firstName : authUser.firstName}
+                  {(authUser.role === ROLES.ROLE_EMPLOYEE || authUser.role === ROLES.ROLE_MANAGER )?  loginUser?.firstName : authUser.firstName}
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {authUser.role === ROLES.ROLE_EMPLOYEE ? user?.jobTitle : ''}
+                  {(authUser.role === ROLES.ROLE_EMPLOYEE  || authUser.role === ROLES.ROLE_MANAGER) ? loginUser?.jobTitle : ''}
                 </p>
                 <p className="mt-1 text-xs text-gray-700 bg-yellow-200 px-2 dark:bg-yellow-100">
-                  {authUser.role === ROLES.ROLE_EMPLOYEE ? user?.email : authUser.email}
+                  {(authUser.role === ROLES.ROLE_EMPLOYEE  || authUser.role === ROLES.ROLE_MANAGER) ? loginUser?.email : authUser.email}
                 </p>
                 <Link
                   to="/user-profile"

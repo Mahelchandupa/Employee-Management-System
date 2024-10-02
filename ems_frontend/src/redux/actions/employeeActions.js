@@ -1,5 +1,5 @@
 import api from "../../utils/api";
-import { CLEAR_EMPLOYEE_ERROR, CLEAR_EMPLOYEE_MESSAGE, DELETE_EMPLOYEE_FAIL, DELETE_EMPLOYEE_SUCCESS, EMPLOYEE_UPDATE_FAIL, EMPLOYEE_UPDATE_SUCCESS, GET_EMPLOYEE_DETAILS_FAIL, GET_EMPLOYEE_DETAILS_SUCCESS, GET_EMPLOYEES_FAIL, GET_EMPLOYEES_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS } from "../../utils/types";
+import { CLEAR_EMPLOYEE_ERROR, CLEAR_EMPLOYEE_MESSAGE, DELETE_EMPLOYEE_FAIL, DELETE_EMPLOYEE_SUCCESS, EMPLOYEE_UPDATE_FAIL, EMPLOYEE_UPDATE_SUCCESS, GET_EMPLOYEE_BY_ID_FAIL, GET_EMPLOYEE_BY_ID_SUCCESS, GET_EMPLOYEE_DETAILS_FAIL, GET_EMPLOYEE_DETAILS_SUCCESS, GET_EMPLOYEES_FAIL, GET_EMPLOYEES_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS, UPDATE_USER_PROFILE, UPDATE_USER_PROFILE_FAIL } from "../../utils/types";
 
 export const registerEmployee = (employee) => async (dispatch) => {
 
@@ -58,14 +58,14 @@ export const getEmployeeById = (id) => async (dispatch) => {
      })
      .then((res) => {
          dispatch({
-             type: GET_EMPLOYEE_DETAILS_SUCCESS,
+             type: GET_EMPLOYEE_BY_ID_SUCCESS,
              payload: res.data
          });
      })
      .catch((err) => {
          const errorMessage = err.response?.data?.message || "An error occurred";
          dispatch({
-             type: GET_EMPLOYEE_DETAILS_FAIL,
+             type: GET_EMPLOYEE_BY_ID_FAIL,
              payload: errorMessage
          });
      });
@@ -178,6 +178,28 @@ export const updateEmployee = (employee, id) => async (dispatch) => {
         const errorMessage = err.response?.data?.message || "An error occurred";
         dispatch({
             type: EMPLOYEE_UPDATE_FAIL,
+            payload: errorMessage
+        });
+    });      
+};
+
+export const updateUserProfile = (employee, id) => async (dispatch) => {
+
+    api.put(`/employees/${id}`, employee, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+    })
+    .then((res) => {
+        dispatch({
+            type: UPDATE_USER_PROFILE,
+            payload: res.data
+        });
+    }).catch((err) => {
+        const errorMessage = err.response?.data?.message || "An error occurred";
+        dispatch({
+            type: UPDATE_USER_PROFILE_FAIL,
             payload: errorMessage
         });
     });      

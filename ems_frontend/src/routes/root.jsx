@@ -24,20 +24,20 @@ const Root = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Detect page refresh and clear tokens
-    const handleBeforeUnload = () => {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      dispatch({ type: LOGOUT }); 
-    };
+  // useEffect(() => {
+  //   // Detect page refresh and clear tokens
+  //   const handleBeforeUnload = () => {
+  //     localStorage.removeItem("accessToken");
+  //     localStorage.removeItem("refreshToken");
+  //     dispatch({ type: LOGOUT }); 
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [dispatch]);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [dispatch]);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");

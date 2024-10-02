@@ -17,6 +17,10 @@ import TwoFaVarification from "../pages/TwoFaVarification";
 import ResetPasswordFristAttempt from "../pages/ResetPasswordFristAttempt";
 import HrRegistration from "../pages/HrRegistration";
 import UpdateManagerForm from "../components/UpdateManagerForm";
+import AdminPrivateRoute from "../components/AdminPrivateRoute";
+import EmployeePrivateRoute from "../components/EmployeePrivateRoute";
+import ManagerPrivateRoute from "../components/ManagerPrivateRoute";
+import UpdateProfileForm from "../components/UpdateProfileForm";
 
 const router = createBrowserRouter([
   {
@@ -46,7 +50,9 @@ const router = createBrowserRouter([
         path: "/register-employee",
         element: (
           <PrivateRoute>
-            <NewEmployeeForm />
+            <ManagerPrivateRoute>
+              <NewEmployeeForm />
+            </ManagerPrivateRoute>
           </PrivateRoute>
         ),
       },
@@ -54,7 +60,19 @@ const router = createBrowserRouter([
         path: "/update-employee/:id",
         element: (
           <PrivateRoute>
-            <UpdateEmployeeForm />
+            <EmployeePrivateRoute>
+              <UpdateEmployeeForm />
+            </EmployeePrivateRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/update-profile/:id",
+        element: (
+          <PrivateRoute>
+            <EmployeePrivateRoute>
+              <UpdateProfileForm />
+            </EmployeePrivateRoute>
           </PrivateRoute>
         ),
       },
@@ -62,7 +80,9 @@ const router = createBrowserRouter([
         path: "/update-manager/:id",
         element: (
           <PrivateRoute>
-            <UpdateManagerForm />
+            <HrPrivateRoute>
+              <UpdateManagerForm />
+            </HrPrivateRoute>
           </PrivateRoute>
         ),
       },
@@ -110,7 +130,9 @@ const router = createBrowserRouter([
         path: "/hr-regitration",
         element: (
           <PrivateRoute>
-            <HrRegistration />
+            <AdminPrivateRoute>
+              <HrRegistration />
+            </AdminPrivateRoute>
           </PrivateRoute>
         ),
       },

@@ -116,5 +116,25 @@ export function RegisterNewHRValidation(values) {
     errors.role = "Role is required";
   }
 
+  if (!values.department) {
+    errors.department = "Department is required";
+  }
+
+  if (!values.jobTitle) {
+    errors.jobTitle = "Job title is required";
+  }
+
+  if (!values.salary) {
+    errors.salary = "Salary is required";
+  }
+
+  if (!values.workHours) {
+    errors.workHours = "Work hours is required";
+  }
+
+  if (!values.employmentStatus) {
+    errors.employmentStatus = "Employment status is required";
+  }
+
   return errors; // Ensure errors object is returned
 }

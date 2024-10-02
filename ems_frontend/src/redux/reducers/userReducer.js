@@ -15,6 +15,10 @@ import {
   DELETE_EMPLOYEE_FAIL,
   EMPLOYEE_UPDATE_SUCCESS,
   EMPLOYEE_UPDATE_FAIL,
+  GET_EMPLOYEE_BY_ID_FAIL,
+  GET_EMPLOYEE_BY_ID_SUCCESS,
+  UPDATE_USER_PROFILE,
+  UPDATE_USER_PROFILE_FAIL,
 } from "../../utils/types";
 
 const initialState = {
@@ -22,6 +26,7 @@ const initialState = {
   error: null,
   message: null,
   user: null,
+  loginUser: null,
   users: [],
 };
 
@@ -71,9 +76,19 @@ export default function userReducer(state = initialState, action) {
     case GET_EMPLOYEE_DETAILS_SUCCESS:
       return {
         ...state,
-        user: payload,
+        loginUser: payload,
       };
     case GET_EMPLOYEE_DETAILS_FAIL:
+      return {
+        ...state,
+        error: payload,
+      };
+    case GET_EMPLOYEE_BY_ID_SUCCESS:
+      return {
+        ...state,
+        user: payload,
+      };
+    case GET_EMPLOYEE_BY_ID_FAIL:
       return {
         ...state,
         error: payload,
@@ -82,6 +97,16 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         users: payload,
+      };
+    case UPDATE_USER_PROFILE:
+      return {
+        ...state,
+        loginUser: payload,
+      };
+    case UPDATE_USER_PROFILE_FAIL:
+      return {
+        ...state,
+        error: payload,
       };
     case GET_EMPLOYEES_FAIL:
       return {

@@ -6,12 +6,16 @@ import useValidation from "../hooks/useValidation";
 import { LoginValidation } from "../validation/Validation";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../redux/actions/authActions";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { button } from "@material-tailwind/react";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const { error, isAuthenticated } = useSelector((state) => state.auth);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   // useEffect(() => {
   //   if (isAuthenticated) {
@@ -95,31 +99,48 @@ const Login = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.email && touched.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-              </div>
+              {errors.email && touched.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
+            </div>
             <div className="mb-6">
               <label className="block text-gray-600 font-medium mb-2">
                 Password
               </label>
-              <input
-                type="password"
-                className="w-full p-3 border border-gray-300 rounded-md"
-                placeholder="Enter your password"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.password && touched.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+              <div className=" relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  placeholder="Enter your password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {showPassword ? (
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                    <FaRegEye
+                      size={18}
+                      className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                    />
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                    <FaRegEyeSlash
+                      size={18}
+                      className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                    />
+                  </button>
+                )}
+              </div>
+              {errors.password && touched.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
-             {/* Error Message */}
-             {error && (
-              <p className="text-red-500 text-sm mb-4">
-                {error}
-              </p>
-            )}
-            
+            {/* Error Message */}
+            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
             {/* <div className="flex items-center mb-6">
             <input
               type="checkbox"
@@ -135,8 +156,12 @@ const Login = () => {
               Remember me
             </label>
           </div> */}
-            <button 
-              className={`w-full ${isFormValid ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}  font-medium p-4 rounded-md transition`}
+            <button
+              className={`w-full ${
+                isFormValid
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-400 cursor-not-allowed"
+              }  font-medium p-4 rounded-md transition`}
             >
               Login
             </button>

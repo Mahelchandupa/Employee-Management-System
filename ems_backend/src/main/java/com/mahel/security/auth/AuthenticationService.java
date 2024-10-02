@@ -63,19 +63,14 @@ public class AuthenticationService {
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) throws BadCredentialsException, RecordNotFoundException {
-    try {
       authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(
                       request.getEmail(),
                       request.getPassword()
               )
       );
-    } catch (AuthenticationException ex) {
-      throw new BadCredentialsException("Invalid email or password");
-    }
-
     var user = repository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new RecordNotFoundException("User not found"));
+            .orElseThrow();
     if (user.isMfaEnabled()) {
       return AuthenticationResponse.builder()
               .accessToken("")
@@ -96,6 +91,7 @@ public class AuthenticationService {
             .firstName(user.getFirstname())
             .lastName(user.getLastname())
             .email(user.getEmail())
+            .id(user.getId())
             .build();
   }
 

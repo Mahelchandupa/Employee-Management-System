@@ -52,10 +52,12 @@ const HrRegistration = () => {
     Object.values(values).every((value) => value);
 
   const submitForm = () => {
-    dispatch(registerEmployee(values));
-    if (success) {
-      setValues(initialState);
-    }
+    dispatch(registerEmployee(values)).then(
+      (success) => success && setValues(initialState)
+    )
+    // if (success) {
+    //   setValues(initialState);
+    // }
   };
 
   useEffect(() => {

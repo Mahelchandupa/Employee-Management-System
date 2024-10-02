@@ -7,8 +7,10 @@ import { ROLES } from "../utils/permission";
 function UserProfile() {
   const navigate = useNavigate();
   const { isAuthenticated, authUser } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.user);
+  const { user, loginUser } = useSelector((state) => state.user);
   const { role } = authUser;
+
+  console.log('loginUser', loginUser);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -30,33 +32,33 @@ function UserProfile() {
                   </div> */}
         </div>
         <h2 className="mt-4 text-xl lg:text-5xl font-bold text-gray-800 dark:text-white capitalize">
-          {authUser.role === ROLES.ROLE_EMPLOYEE
-            ? user?.firstName
+          {(authUser.role === ROLES.ROLE_EMPLOYEE || authUser.role === ROLES.ROLE_MANAGER)
+            ? loginUser?.firstName
             : authUser.firstName}{" "}
-          {authUser.role === ROLES.ROLE_EMPLOYEE
-            ? user?.lastName
+          {(authUser.role === ROLES.ROLE_EMPLOYEE || authUser.role === ROLES.ROLE_MANAGER)
+            ? loginUser?.lastName
             : authUser.lastName}
         </h2>
         <p className=" text-lg lg:text-xl text-gray-500 dark:text-gray-400">
-          {authUser.role === ROLES.ROLE_EMPLOYEE ? user?.jobTitle : authUser.role === ROLES.ROLE_MANAGER ? 'Manager' : 'Admin'} 
+          {(authUser.role === ROLES.ROLE_EMPLOYEE || authUser.role === ROLES.ROLE_MANAGER) ? user?.jobTitle : 'Admin'} 
         </p>
         <p className="mt-1 text-lg  bg-yellow-200 px-6 dark:bg-yellow-100 text-gray-500 dark:text-black">
-          {user?.email}
+          {(authUser.role === ROLES.ROLE_EMPLOYEE || authUser.role === ROLES.ROLE_MANAGER) ? loginUser?.email : authUser.email}
         </p>
       </div>
 
       <div className=" flex justify-between items-center px-3 lg:max-w-lg mx-auto mt-5">
-        {role !== ROLES.ROLE_MANAGER && role !== ROLES.ROLE_ADMIN && (
-          <div>
+        {role !== ROLES.ROLE_ADMIN && (
             <Link
-              to={`/update-employee/${user?.id}`}
+              to={`/update-profile/${loginUser?.id}`}
               className=" text-sm md:text-lg rounded-md text-black hover:font-medium dark:text-purple-500 hover:bg-primary-dark dark:hover:text-purple-300 transition duration-300"
             >
               Update Profile
             </Link>
-            <span className=" dark:text-gray-300">|</span>
-          </div>
         )}
+        {
+          role !== ROLES.ROLE_ADMIN &&  <span className=" dark:text-gray-300 mx-2">|</span>
+        }
         <Link
           to="/reset-password"
           className=" text-sm md:text-lg rounded-md text-black hover:font-medium dark:text-purple-500 hover:bg-primary-dark dark:hover:text-purple-300 transition duration-300"
@@ -72,7 +74,7 @@ function UserProfile() {
         </Link>
       </div>
 
-      {role === ROLES.ROLE_EMPLOYEE && (
+      {(role === ROLES.ROLE_EMPLOYEE || role === ROLES.ROLE_MANAGER) && (
         <div className="mt-8 space-y-8">
           {/* Personal Details */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
@@ -81,28 +83,28 @@ function UserProfile() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>DOB:</strong> {user?.dob}
+                <strong>DOB:</strong> {loginUser?.dob}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Gender:</strong> {user?.gender}
+                <strong>Gender:</strong> {loginUser?.gender}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Mobile:</strong> {user?.mobile}
+                <strong>Mobile:</strong> {loginUser?.mobile}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Home Phone:</strong> {user?.homePhone}
+                <strong>Home Phone:</strong> {loginUser?.homePhone}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Address:</strong> {user?.address}
+                <strong>Address:</strong> {loginUser?.address}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Postal Code:</strong> {user?.postalCode}
+                <strong>Postal Code:</strong> {loginUser?.postalCode}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>NIC:</strong> {user?.nic}
+                <strong>NIC:</strong> {loginUser?.nic}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>City:</strong> {user?.city}
+                <strong>City:</strong> {loginUser?.city}
               </p>
             </div>
           </div>
@@ -114,19 +116,19 @@ function UserProfile() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Department:</strong> {user?.department}
+                <strong>Department:</strong> {loginUser?.department}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Job Title:</strong> {user?.jobTitle}
+                <strong>Job Title:</strong> {loginUser?.jobTitle}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Employment Status:</strong> {user?.employmentStatus}
+                <strong>Employment Status:</strong> {loginUser?.employmentStatus}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Salary:</strong> ${user?.salary}
+                <strong>Salary:</strong> Rs. {loginUser?.salary}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Work Hours:</strong> {user?.workHours} hours/week
+                <strong>Work Hours:</strong> {loginUser?.workHours} hours/week
               </p>
             </div>
           </div>
@@ -138,16 +140,16 @@ function UserProfile() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Bank:</strong> {user?.bank}
+                <strong>Bank:</strong> {loginUser?.bank}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Branch:</strong> {user?.branch}
+                <strong>Branch:</strong> {loginUser?.branch}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Account Name:</strong> {user?.accName}
+                <strong>Account Name:</strong> {loginUser?.accName}
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                <strong>Account Number:</strong> {user?.accNumber}
+                <strong>Account Number:</strong> {loginUser?.accNumber}
               </p>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ResetPasswordValidation } from "../validation/Validation";
@@ -8,6 +8,7 @@ import {
   resetUserPassword,
 } from "../redux/actions/userActions";
 import usePreviousRoute from "../hooks/usePreviousRoute";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const ResetPassword = () => {
   const { isAuthenticated, authUser } = useSelector((state) => state.auth);
@@ -17,6 +18,11 @@ const ResetPassword = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmationPassword, setShowConfirmationPassword] =
+    useState(false);
 
   // useEffect(() => {
   //   if (!isAuthenticated) {
@@ -68,8 +74,14 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className={` ${authUser?.firstAttempt ? 'h-screen' : 'h-full'} flex items-center justify-center bg-gray-100 dark:bg-gray-900`}>
-      <div className={`bg-white max-h-[700px] dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-4xl`}>
+    <div
+      className={` ${
+        authUser?.firstAttempt ? "h-screen" : "h-full"
+      } flex items-center justify-center bg-gray-100 dark:bg-gray-900`}
+    >
+      <div
+        className={`bg-white max-h-[700px] dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-4xl`}
+      >
         <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
           Reset Password
         </h2>
@@ -78,16 +90,39 @@ const ResetPassword = () => {
             <label className="block text-gray-700 dark:text-gray-300 mb-2">
               Current Password <span className="text-red-400">*</span>
             </label>
-            <input
-              type="password"
-              value={values.currentPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Current Password"
-              name="currentPassword"
-              id="currentPassword"
-            />
+            <div className=" relative">
+              <input
+                type={showCurrentPassword ? "text" : "password"}
+                value={values.currentPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Current Password"
+                name="currentPassword"
+                id="currentPassword"
+              />
+              {showCurrentPassword ? (
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                >
+                  <FaRegEye
+                    size={18}
+                    className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                  />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                >
+                  <FaRegEyeSlash
+                    size={18}
+                    className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                  />
+                </button>
+              )}
+            </div>
             {touched.currentPassword && errors.currentPassword && (
               <p className="text-red-400 text-sm mt-1">
                 {errors.currentPassword}
@@ -99,16 +134,39 @@ const ResetPassword = () => {
             <label className="block text-gray-700 dark:text-gray-300 mb-2">
               New Password <span className="text-red-400">*</span>
             </label>
-            <input
-              type="password"
-              value={values.newPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="New Password"
-              name="newPassword"
-              id="newPassword"
-            />
+            <div className=" relative">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                value={values.newPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="New Password"
+                name="newPassword"
+                id="newPassword"
+              />
+              {showNewPassword ? (
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  <FaRegEye
+                    size={18}
+                    className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                  />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  <FaRegEyeSlash
+                    size={18}
+                    className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                  />
+                </button>
+              )}
+            </div>
             {touched.newPassword && errors.newPassword && (
               <p className="text-red-400 text-sm mt-1">{errors.newPassword}</p>
             )}
@@ -118,16 +176,43 @@ const ResetPassword = () => {
             <label className="block text-gray-700 dark:text-gray-300 mb-2">
               Confirm Password <span className="text-red-400">*</span>
             </label>
-            <input
-              type="password"
-              value={values.confirmationPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Confirm Password"
-              name="confirmationPassword"
-              id="confirmationPassword"
-            />
+            <div className=" relative">
+              <input
+                type={showConfirmationPassword ? "text" : "password"}
+                value={values.confirmationPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full p-2.5 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Confirm Password"
+                name="confirmationPassword"
+                id="confirmationPassword"
+              />
+              {showConfirmationPassword ? (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowConfirmationPassword(!showConfirmationPassword)
+                  }
+                >
+                  <FaRegEye
+                    size={18}
+                    className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                  />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowConfirmationPassword(!showConfirmationPassword)
+                  }
+                >
+                  <FaRegEyeSlash
+                    size={18}
+                    className="absolute top-4 right-4 text-gray-400 cursor-pointer"
+                  />
+                </button>
+              )}
+            </div>
             {touched.confirmationPassword && errors.confirmationPassword && (
               <p className="text-red-400 text-sm mt-1">
                 {errors.confirmationPassword}
