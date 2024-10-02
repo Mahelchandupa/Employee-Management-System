@@ -66,7 +66,7 @@ const UpdateProfileForm = () => {
     e.preventDefault();
     dispatch(updateEmployee(values, id));
     if (success) {
-      setValues(user);
+      setValues(loginUser);
     }
   };
 
